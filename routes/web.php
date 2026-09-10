@@ -1,16 +1,44 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\AdminController;
 
-Route::get('/products', [ProductController::class, 'index']);
+Route::get('/', function () {
+    return view('home');
+});
 
-Route::get('/login', [LoginController::class, 'showLogin']);
+Route::get('/tentang', function () {
+    $namaProdi = 'Teknologi Rekayasa Perangkat Lunak';
+    $jurusan = 'Teknologi Informasi';
 
-Route::post('/login', [LoginController::class, 'login']);
+    return view('tentang', compact('namaProdi', 'jurusan'));
+});
 
-Route::post('/logout', [LoginController::class, 'logout']);
+Route::get('/dosen', function () {
+    $dosen = [
+        [
+            'nama' => 'Budi Santoso',
+            'nidn' => '0012345678',
+            'jabatan' => 'Dosen'
+        ],
+        [
+            'nama' => 'Siti Aminah',
+            'nidn' => '0012345679',
+            'jabatan' => 'Dosen'
+        ],
+        [
+            'nama' => 'Andi Wijaya',
+            'nidn' => '0012345680',
+            'jabatan' => 'Ketua Program Studi'
+        ],
+    ];
 
-Route::get('/admin', [AdminController::class, 'index']);
+    return view('dosen', compact('dosen'));
+});
+
+Route::get('/kontak', function () {
+    return view('kontak');
+});
+
+Route::get('/dosen/{nama}', function ($nama) {
+    return view('detail-dosen', compact('nama'));
+});
