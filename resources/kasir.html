@@ -1,0 +1,1723 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f7fb">
+    <title>Kasir | MiniMarket</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #172033;
+            --muted: #758096;
+            --blue: #2563eb;
+            --blue-dark: #1d4ed8;
+            --line: #e5eaf2;
+            --canvas: #f3f6fb;
+            --green: #178457;
+            --red: #d9485f;
+            --shadow: 0 10px 28px rgba(29, 49, 82, .07);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: var(--ink);
+            background: var(--canvas);
+            font-family: Inter, "Segoe UI", Arial, sans-serif;
+            font-size: 14px;
+        }
+
+        button, input, select { font: inherit; }
+        button:focus-visible, input:focus-visible, select:focus-visible {
+            outline: 3px solid rgba(37, 99, 235, .2);
+            outline-offset: 2px;
+        }
+
+        .app-header {
+            position: sticky;
+            z-index: 10;
+            top: 0;
+            display: flex;
+            min-height: 72px;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 14px clamp(18px, 4vw, 56px);
+            border-bottom: 1px solid rgba(223, 229, 238, .85);
+            background: rgba(255, 255, 255, .92);
+            backdrop-filter: blur(14px);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--ink);
+            text-decoration: none;
+        }
+
+        .brand-mark {
+            display: grid;
+            width: 42px;
+            height: 42px;
+            place-items: center;
+            border-radius: 13px;
+            color: #fff;
+            background: linear-gradient(145deg, #3b82f6, #1d4ed8);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, .22);
+            font-size: 19px;
+        }
+
+        .brand-name { font-weight: 800; letter-spacing: -.03em; }
+        .brand-caption { display: block; margin-top: 2px; color: var(--muted); font-size: 11px; font-weight: 500; }
+
+        .header-right { display: flex; align-items: center; gap: 12px; }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 11px;
+            border: 1px solid #dcefe5;
+            border-radius: 99px;
+            color: #18764c;
+            background: #f1fbf5;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #27ae70; }
+
+        .header-time { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+
+        .page {
+            width: min(1440px, 100%);
+            margin: 0 auto;
+            padding: 28px clamp(16px, 4vw, 56px) 48px;
+        }
+
+        .page-heading {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .eyebrow {
+            margin-bottom: 7px;
+            color: var(--blue);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(24px, 3vw, 32px);
+            font-weight: 800;
+            letter-spacing: -.05em;
+        }
+
+        .page-subtitle { margin: 7px 0 0; color: var(--muted); }
+
+        .transaction-meta {
+            color: var(--muted);
+            font-size: 11px;
+            text-align: right;
+        }
+
+        .transaction-meta strong {
+            display: block;
+            margin-top: 3px;
+            color: var(--ink);
+            font-size: 13px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .workflow-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: -3px 0 17px;
+        }
+
+        .workflow-button {
+            display: inline-flex;
+            min-height: 37px;
+            align-items: center;
+            gap: 7px;
+            padding: 0 12px;
+            border: 1px solid #dfe5ee;
+            border-radius: 9px;
+            color: #4f5b70;
+            background: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            box-shadow: 0 3px 10px rgba(29,49,82,.035);
+            transition: color .15s, border-color .15s, background .15s, transform .15s;
+        }
+
+        .workflow-button:hover {
+            transform: translateY(-1px);
+            border-color: #b8cdf3;
+            color: var(--blue);
+            background: #f8fbff;
+        }
+
+        .workflow-button i { color: var(--blue); }
+        .workflow-button.shift { margin-left: auto; color: #18764c; border-color: #dcefe5; background: #f7fcf9; }
+        .workflow-button.shift i { color: #178457; }
+
+        .counter-badge {
+            display: inline-grid;
+            min-width: 18px;
+            height: 18px;
+            place-items: center;
+            padding: 0 5px;
+            border-radius: 99px;
+            color: #fff;
+            background: #64748b;
+            font-size: 10px;
+        }
+
+        .workflow-list { display: grid; gap: 9px; }
+
+        .workflow-entry {
+            padding: 12px;
+            border: 1px solid #e7ebf2;
+            border-radius: 10px;
+            background: #fff;
+        }
+
+        .workflow-entry-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+        .workflow-entry-title { font-size: 12px; font-weight: 800; }
+        .workflow-entry-meta { margin-top: 4px; color: var(--muted); font-size: 10px; }
+        .workflow-entry-total { font-size: 12px; font-weight: 800; white-space: nowrap; }
+        .workflow-entry-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+        .workflow-entry-actions .btn { font-size: 10px; }
+        .workflow-empty { padding: 24px 12px; color: var(--muted); text-align: center; font-size: 12px; }
+
+        .return-line {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 88px;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #edf0f5;
+        }
+
+        .return-line:last-child { border-bottom: 0; }
+        .return-quantity { text-align: right; }
+        .return-quantity .form-control { min-height: 35px; text-align: right; }
+
+        .shift-breakdown { display: grid; gap: 8px; margin: 12px 0; }
+        .shift-breakdown .summary-line { margin: 0; }
+        .shift-note { color: var(--muted); font-size: 11px; }
+
+        .pos-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 360px;
+            align-items: start;
+            gap: 18px;
+        }
+
+        .main-column { display: grid; gap: 16px; min-width: 0; }
+
+        .panel {
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: 13px;
+            background: #fff;
+            box-shadow: var(--shadow);
+        }
+
+        .panel-heading {
+            display: flex;
+            min-height: 48px;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--line);
+            background: linear-gradient(180deg, #fff, #fcfdff);
+        }
+
+        .panel-title {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin: 0;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .panel-title i { color: var(--blue); font-size: 15px; }
+        .panel-body { padding: 16px; }
+
+        .field-label {
+            display: block;
+            margin-bottom: 6px;
+            color: #4f5b70;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .form-control, .form-select {
+            min-height: 41px;
+            border-color: #dfe5ee;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #82adff;
+            box-shadow: 0 0 0 .2rem rgba(37, 99, 235, .11);
+        }
+
+        .search-row { display: flex; gap: 9px; }
+        .search-row .input-group { flex: 1; }
+        .search-row .input-group-text { color: #7b879b; background: #fff; border-color: #dfe5ee; }
+
+        .btn-search {
+            min-width: 88px;
+            border-radius: 8px;
+            color: #fff;
+            background: var(--blue);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .btn-search:hover { color: #fff; background: var(--blue-dark); }
+
+        .product-results {
+            display: none;
+            max-height: 220px;
+            margin-top: 9px;
+            overflow-y: auto;
+            border: 1px solid var(--line);
+            border-radius: 9px;
+            background: #fff;
+        }
+
+        .product-results.open { display: block; }
+
+        .product-option {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 11px 13px;
+            border: 0;
+            border-bottom: 1px solid #f0f2f6;
+            background: #fff;
+            text-align: left;
+            cursor: pointer;
+            transition: background .15s;
+        }
+
+        .product-option:last-child { border-bottom: 0; }
+        .product-option:hover { background: #f4f8ff; }
+        .product-option:disabled { color: #a0a6b2; cursor: not-allowed; }
+        .product-option-name { display: block; font-weight: 700; }
+        .product-option-meta { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; }
+        .product-option-price { color: var(--blue); font-weight: 800; white-space: nowrap; }
+
+        .helper-text { margin-top: 8px; color: var(--muted); font-size: 11px; }
+
+        .customer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; margin-top: 13px; }
+
+        .cart-heading-right { color: var(--muted); font-size: 11px; }
+
+        .cart-table-wrap { min-height: 190px; overflow-x: auto; }
+
+        .cart-table {
+            width: 100%;
+            margin: 0;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .cart-table th {
+            padding: 10px 13px;
+            border-bottom: 1px solid var(--line);
+            color: #667287;
+            background: #f8f9fb;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: .035em;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .cart-table td { padding: 11px 13px; border-bottom: 1px solid #f0f2f6; vertical-align: middle; }
+        .cart-table tbody tr:last-child td { border-bottom: 0; }
+        .cart-table .number { text-align: right; white-space: nowrap; }
+        .cart-product { font-weight: 700; }
+        .cart-product-meta { margin-top: 3px; color: var(--muted); font-size: 10px; }
+
+        .qty-control {
+            display: inline-flex;
+            align-items: center;
+            border: 1px solid #e2e7ef;
+            border-radius: 7px;
+            overflow: hidden;
+        }
+
+        .qty-control button {
+            width: 27px;
+            height: 27px;
+            border: 0;
+            color: #536075;
+            background: #f7f9fc;
+            cursor: pointer;
+        }
+
+        .qty-control button:hover { color: var(--blue); background: #edf4ff; }
+        .qty-value { min-width: 29px; text-align: center; font-weight: 700; }
+
+        .remove-item {
+            padding: 5px;
+            border: 0;
+            color: #9aa3b1;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .remove-item:hover { color: var(--red); }
+
+        .empty-cart {
+            display: grid;
+            min-height: 190px;
+            place-items: center;
+            color: #8b94a3;
+            text-align: center;
+        }
+
+        .empty-cart i { display: block; margin-bottom: 9px; color: #b1bdcf; font-size: 25px; }
+        .empty-cart strong { display: block; margin-bottom: 3px; color: #69758a; font-size: 12px; }
+        .empty-cart span { font-size: 11px; }
+
+        .summary-panel { position: sticky; top: 91px; }
+        .summary-body { padding: 15px; }
+
+        .summary-line {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 11px;
+            color: #5d687a;
+            font-size: 12px;
+        }
+
+        .summary-line strong { color: #253047; font-weight: 700; }
+
+        .summary-input {
+            width: 100px;
+            min-height: 33px;
+            padding: 5px 9px;
+            border: 1px solid #dfe5ee;
+            border-radius: 7px;
+            text-align: right;
+            font-size: 12px;
+        }
+
+        .summary-total {
+            margin: 15px 0;
+            padding: 14px;
+            border: 1px solid #eaf0f7;
+            border-radius: 10px;
+            background: #f7f9fc;
+        }
+
+        .summary-total span { display: block; color: #778398; font-size: 10px; font-weight: 700; letter-spacing: .07em; }
+        .summary-total strong { display: block; margin-top: 4px; color: #172033; font-size: 25px; font-weight: 800; letter-spacing: -.04em; }
+
+        .payment-box {
+            padding: 12px;
+            border: 1px solid #d6e7fc;
+            border-radius: 10px;
+            background: #f2f8ff;
+        }
+
+        .payment-input-wrap { position: relative; }
+        .payment-input-wrap .form-control { min-height: 46px; padding-right: 43px; text-align: right; font-size: 19px; font-weight: 800; }
+        .currency-prefix { position: absolute; z-index: 2; top: 50%; left: 12px; color: #8090a5; transform: translateY(-50%); }
+
+        .method-label { margin: 12px 0 7px; color: #46536a; font-size: 10px; font-weight: 800; }
+
+        .payment-methods { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+
+        .method-button {
+            min-height: 35px;
+            padding: 5px 4px;
+            border: 1px solid #dce3ec;
+            border-radius: 7px;
+            color: #566176;
+            background: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: color .15s, background .15s, border-color .15s;
+        }
+
+        .method-button:hover { border-color: #9abcf8; color: var(--blue); }
+        .method-button.active { border-color: var(--blue); color: #fff; background: var(--blue); box-shadow: 0 3px 8px rgba(37,99,235,.18); }
+
+        .change-box {
+            margin-top: 11px;
+            padding: 10px 11px;
+            border: 1px solid #d4eee0;
+            border-radius: 8px;
+            color: #27754f;
+            background: #eaf8f0;
+        }
+
+        .change-box.insufficient { border-color: #f7d7da; color: #a53c4c; background: #fff0f1; }
+        .change-label { display: block; font-size: 10px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+        .change-value { display: block; margin-top: 2px; font-size: 18px; font-weight: 800; }
+
+        .quick-cash { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+
+        .quick-cash button {
+            padding: 5px 8px;
+            border: 1px solid #d7e3f2;
+            border-radius: 6px;
+            color: #42628e;
+            background: rgba(255,255,255,.82);
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+        .quick-cash button:hover { border-color: var(--blue); color: var(--blue); }
+
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-top: 13px; }
+
+        .action-button {
+            min-height: 39px;
+            border: 0;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 800;
+            transition: transform .15s, filter .15s;
+        }
+
+        .action-button:hover { transform: translateY(-1px); filter: brightness(.97); }
+        .hold-button { color: #573f08; background: #ffca3a; }
+        .cancel-button { color: #fff; background: #dc3545; }
+        .pay-button { grid-column: 1 / -1; min-height: 47px; color: #fff; background: #198754; font-size: 12px; }
+        .pay-button:disabled { cursor: not-allowed; filter: grayscale(.3); opacity: .55; }
+
+        .notice {
+            position: fixed;
+            z-index: 50;
+            right: 20px;
+            bottom: 20px;
+            display: flex;
+            max-width: min(380px, calc(100vw - 40px));
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            border: 1px solid #dce5f2;
+            border-radius: 10px;
+            color: #243147;
+            background: #fff;
+            box-shadow: 0 12px 35px rgba(24, 39, 65, .2);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(10px);
+            transition: opacity .2s, transform .2s;
+        }
+
+        .notice.show { opacity: 1; transform: translateY(0); }
+        .notice i { color: var(--blue); font-size: 17px; }
+
+        .modal-content { border: 0; border-radius: 14px; }
+        .receipt { padding: 18px; font-family: "Courier New", monospace; font-size: 12px; }
+        .receipt h3 { margin: 0; font-size: 16px; text-align: center; }
+        .receipt p { margin: 4px 0 12px; color: #555; text-align: center; }
+        .receipt-divider { margin: 10px 0; border-top: 1px dashed #777; }
+        .receipt-row { display: flex; justify-content: space-between; gap: 10px; margin: 5px 0; }
+        .receipt-item { margin: 8px 0; }
+        .receipt-item div:last-child { display: flex; justify-content: space-between; }
+
+        @media (max-width: 1000px) {
+            .pos-layout { grid-template-columns: minmax(0, 1fr) 320px; }
+        }
+
+        @media (max-width: 780px) {
+            .page { padding-top: 20px; }
+            .pos-layout { grid-template-columns: 1fr; }
+            .summary-panel { position: static; }
+            .page-heading { align-items: flex-start; }
+            .header-time { display: none; }
+        }
+
+        @media (max-width: 520px) {
+            .app-header { min-height: 62px; }
+            .header-right .status-pill { display: none; }
+            .page-heading { flex-direction: column; }
+            .transaction-meta { text-align: left; }
+            .customer-grid { grid-template-columns: 1fr; }
+            .panel-body { padding: 13px; }
+            .cart-table th, .cart-table td { padding-inline: 9px; }
+            .cart-table { min-width: 590px; }
+        }
+
+        @media print {
+            body * { visibility: hidden !important; }
+            #receipt-content, #receipt-content * { visibility: visible !important; }
+            #receipt-content { position: absolute; inset: 0; width: 100%; }
+            .modal, .modal-backdrop { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <header class="app-header">
+        <a class="brand" href="#" aria-label="MiniMarket Kasir">
+            <span class="brand-mark"><i class="bi bi-shop"></i></span>
+            <span class="brand-name">MiniMarket<span class="brand-caption">Sistem kasir</span></span>
+        </a>
+        <div class="header-right">
+            <span class="status-pill" id="register-status"><span class="status-dot"></span> Kasir siap</span>
+            <span class="header-time" id="clock"></span>
+        </div>
+    </header>
+
+    <main class="page">
+        <div class="page-heading">
+            <div>
+                <p class="eyebrow">Point of sale</p>
+                <h1>Transaksi Kasir</h1>
+                <p class="page-subtitle">Cari barang, tambahkan ke keranjang, lalu selesaikan pembayaran.</p>
+            </div>
+            <div class="transaction-meta">
+                No. Transaksi
+                <strong id="transaction-number"></strong>
+            </div>
+        </div>
+
+        <nav class="workflow-toolbar" aria-label="Fitur transaksi kasir">
+            <button class="workflow-button" type="button" data-bs-toggle="modal" data-bs-target="#held-modal">
+                <i class="bi bi-pause-circle"></i> Transaksi ditahan <span class="counter-badge" id="held-count">0</span>
+            </button>
+            <button class="workflow-button" type="button" data-bs-toggle="modal" data-bs-target="#history-modal">
+                <i class="bi bi-clock-history"></i> Riwayat transaksi
+            </button>
+            <button class="workflow-button" type="button" data-bs-toggle="modal" data-bs-target="#returns-modal">
+                <i class="bi bi-arrow-counterclockwise"></i> Retur penjualan
+            </button>
+            <button class="workflow-button shift" id="shift-button" type="button">
+                <i class="bi bi-door-open"></i> <span id="shift-button-label">Tutup kasir</span>
+            </button>
+        </nav>
+
+        <div class="pos-layout">
+            <div class="main-column">
+                <section class="panel" aria-labelledby="add-item-title">
+                    <div class="panel-heading">
+                        <h2 class="panel-title" id="add-item-title"><i class="bi bi-bag-plus"></i> Tambah Barang</h2>
+                    </div>
+                    <div class="panel-body">
+                        <div class="search-row">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                <input class="form-control" id="product-search" type="search" placeholder="Cari nama barang / kode / barcode..." autocomplete="off" aria-label="Cari barang">
+                            </div>
+                            <button class="btn btn-search" id="search-button" type="button"><i class="bi bi-search me-1"></i> Cari</button>
+                        </div>
+                        <div class="product-results" id="product-results" role="listbox" aria-label="Hasil pencarian barang"></div>
+                        <div class="customer-grid">
+                            <div>
+                                <label class="field-label" for="customer-type">Pelanggan</label>
+                                <select class="form-select" id="customer-type">
+                                    <option value="Umum">Umum</option>
+                                    <option value="Member">Member</option>
+                                    <option value="Pelanggan">Pelanggan</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="field-label" for="member-contact">No. Member / HP</label>
+                                <input class="form-control" id="member-contact" type="text" placeholder="Opsional">
+                            </div>
+                        </div>
+                        <div class="helper-text"><i class="bi bi-info-circle me-1"></i>Daftar barang, harga, dan stok disinkronkan dari katalog produk.</div>
+                    </div>
+                </section>
+
+                <section class="panel" aria-labelledby="cart-title">
+                    <div class="panel-heading">
+                        <h2 class="panel-title" id="cart-title"><i class="bi bi-cart3"></i> Keranjang Belanja</h2>
+                        <span class="cart-heading-right"><strong id="item-count">0</strong> item</span>
+                    </div>
+                    <div class="cart-table-wrap" id="cart-content">
+                        <div class="empty-cart">
+                            <div><i class="bi bi-cart-x"></i><strong>Keranjang masih kosong</strong><span>Cari atau scan barang untuk memulai transaksi.</span></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <aside class="panel summary-panel" aria-labelledby="payment-summary-title">
+                <div class="panel-heading">
+                    <h2 class="panel-title" id="payment-summary-title"><i class="bi bi-receipt"></i> Ringkasan Pembayaran</h2>
+                </div>
+                <div class="summary-body">
+                    <div class="summary-line"><span>Total Item</span><strong id="summary-items">0</strong></div>
+                    <div class="summary-line"><span>Subtotal</span><strong id="subtotal">Rp 0</strong></div>
+                    <div class="summary-line">
+                        <label for="discount-percent">Diskon (%)</label>
+                        <input class="summary-input money-input" id="discount-percent" type="number" min="0" max="100" step="1" value="0" aria-label="Diskon persen">
+                    </div>
+                    <div class="summary-line">
+                        <label for="discount-amount">Diskon (Rp)</label>
+                        <input class="summary-input money-input" id="discount-amount" type="number" min="0" step="100" value="0" aria-label="Diskon rupiah">
+                    </div>
+                    <div class="summary-line">
+                        <label for="tax-amount">Pajak / PPN (Rp)</label>
+                        <input class="summary-input money-input" id="tax-amount" type="number" min="0" step="100" value="0" aria-label="Pajak rupiah">
+                    </div>
+                    <div class="summary-line">
+                        <label for="other-fees">Biaya lain (Rp)</label>
+                        <input class="summary-input money-input" id="other-fees" type="number" min="0" step="100" value="0" aria-label="Biaya lain rupiah">
+                    </div>
+
+                    <div class="summary-total">
+                        <span>TOTAL AKHIR</span>
+                        <strong id="grand-total">Rp 0</strong>
+                    </div>
+
+                    <div class="payment-box">
+                        <label class="field-label" for="amount-paid">Uang Dibayar</label>
+                        <div class="payment-input-wrap">
+                            <span class="currency-prefix">Rp</span>
+                            <input class="form-control" id="amount-paid" type="number" min="0" step="1000" value="0" inputmode="numeric">
+                        </div>
+                        <div class="quick-cash" aria-label="Pilihan nominal uang">
+                            <button type="button" data-cash="exact">Uang pas</button>
+                            <button type="button" data-cash="50000">50.000</button>
+                            <button type="button" data-cash="100000">100.000</button>
+                        </div>
+
+                        <p class="method-label">Metode Pembayaran</p>
+                        <div class="payment-methods" role="group" aria-label="Metode pembayaran">
+                            <button class="method-button active" type="button" data-method="Tunai" aria-pressed="true">Tunai</button>
+                            <button class="method-button" type="button" data-method="QRIS" aria-pressed="false">QRIS</button>
+                            <button class="method-button" type="button" data-method="Debit" aria-pressed="false">Debit</button>
+                            <button class="method-button" type="button" data-method="Kredit" aria-pressed="false">Kredit</button>
+                            <button class="method-button" type="button" data-method="E-Wallet" aria-pressed="false">E-Wallet</button>
+                            <button class="method-button" type="button" data-method="Transfer" aria-pressed="false">Transfer</button>
+                        </div>
+
+                        <div class="change-box" id="change-box" aria-live="polite">
+                            <span class="change-label" id="change-label">Kembalian</span>
+                            <strong class="change-value" id="change-value">Rp 0</strong>
+                        </div>
+                    </div>
+
+                    <div class="action-grid">
+                        <button class="action-button hold-button" id="hold-button" type="button"><i class="bi bi-pause-circle me-1"></i> Tahan</button>
+                        <button class="action-button cancel-button" id="cancel-button" type="button"><i class="bi bi-x-circle me-1"></i> Batal</button>
+                        <button class="action-button pay-button" id="pay-button" type="button" disabled><i class="bi bi-printer me-2"></i> BAYAR &amp; CETAK</button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <div class="notice" id="notice" role="status" aria-live="polite">
+        <i class="bi bi-info-circle"></i><span id="notice-message"></span>
+    </div>
+
+    <div class="modal fade" id="receipt-modal" tabindex="-1" aria-labelledby="receipt-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title fs-6 fw-bold" id="receipt-title">Transaksi berhasil</h2>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="receipt" id="receipt-content"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-dismiss="modal">Tutup</button>
+                    <button class="btn btn-primary btn-sm" id="print-receipt" type="button"><i class="bi bi-printer me-1"></i> Cetak struk</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="held-modal" tabindex="-1" aria-labelledby="held-title" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title fs-6 fw-bold" id="held-title">Transaksi ditahan</h2>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                        </div>
+                        <div class="modal-body"><div class="workflow-list" id="held-list"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="history-modal" tabindex="-1" aria-labelledby="history-title" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title fs-6 fw-bold" id="history-title">Riwayat transaksi</h2>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                        </div>
+                        <div class="modal-body"><div class="workflow-list" id="history-list"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="returns-modal" tabindex="-1" aria-labelledby="returns-title" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title fs-6 fw-bold" id="returns-title">Retur penjualan</h2>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                        </div>
+                        <div class="modal-body"><div class="workflow-list" id="returns-list"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="return-detail-modal" tabindex="-1" aria-labelledby="return-detail-title" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title fs-6 fw-bold" id="return-detail-title">Pilih barang retur</h2>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p class="small text-secondary" id="return-transaction-label"></p>
+                            <div id="return-lines"></div>
+                            <div class="summary-total mt-3 mb-0">
+                                <span>ESTIMASI PENGEMBALIAN</span>
+                                <strong id="return-estimate">Rp 0</strong>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-dismiss="modal">Kembali</button>
+                            <button class="btn btn-warning btn-sm fw-bold" id="confirm-return" type="button" disabled>Proses retur</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="shift-modal" tabindex="-1" aria-labelledby="shift-title" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title fs-6 fw-bold" id="shift-title">Tutup kasir</h2>
+                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="shift-open-fields">
+                                <label class="field-label" for="opening-balance">Saldo awal kas</label>
+                                <input class="form-control" id="opening-balance" type="number" min="0" step="1000" value="0">
+                                <p class="shift-note mt-2 mb-0">Masukkan uang tunai di laci saat kasir mulai dibuka.</p>
+                            </div>
+                            <div class="workflow-entry mt-3" id="last-closure" style="display: none;"></div>
+                            <div id="shift-close-fields">
+                                <div class="summary-line"><span>Saldo awal kas</span><strong id="shift-opening-display">Rp 0</strong></div>
+                                <p class="field-label mb-2">Ringkasan penjualan bersih per metode</p>
+                                <div class="shift-breakdown" id="shift-breakdown"></div>
+                                <div class="summary-total">
+                                    <span>UANG TUNAI YANG SEHARUSNYA ADA</span>
+                                    <strong id="expected-cash">Rp 0</strong>
+                                </div>
+                                <label class="field-label mt-3" for="closing-balance">Saldo akhir kas aktual</label>
+                                <input class="form-control" id="closing-balance" type="number" min="0" step="1000" value="0">
+                                <div class="summary-line mt-3 mb-0"><span>Selisih kas</span><strong id="cash-difference">Rp 0</strong></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-dismiss="modal">Kembali</button>
+                            <button class="btn btn-primary btn-sm fw-bold" id="shift-confirm" type="button">Simpan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let products = __CASHIER_PRODUCTS_JSON__;
+
+        const cart = new Map();
+        let paymentMethod = 'Tunai';
+        let noticeTimer;
+        const storageKey = 'minimarket-cashier-demo-v2';
+        let heldTransactions = [];
+        let transactions = [];
+        let shiftHistory = [];
+        let activeShift = null;
+        let transactionSequence = 0;
+        let transactionNumber;
+        let returnTargetId = null;
+
+        const searchInput = document.getElementById('product-search');
+        const results = document.getElementById('product-results');
+        const cartContent = document.getElementById('cart-content');
+        const amountPaidInput = document.getElementById('amount-paid');
+        const numberFormat = new Intl.NumberFormat('id-ID');
+        const money = (value) => `Rp ${numberFormat.format(Math.max(0, Math.round(value || 0)))}`;
+        const signedMoney = (value) => `${value < 0 ? '−' : ''}Rp ${numberFormat.format(Math.abs(Math.round(value || 0)))}`;
+        const safe = (value) => String(value).replace(/[&<>"']/g, (char) => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
+        })[char]);
+
+        function nextTransactionNumber() {
+            transactionSequence += 1;
+            return `TRX-${new Date().toISOString().slice(0, 10).replaceAll('-', '')}-${String(transactionSequence).padStart(4, '0')}`;
+        }
+
+        function saveState() {
+            localStorage.setItem(storageKey, JSON.stringify({
+                heldTransactions,
+                transactions,
+                shiftHistory,
+                activeShift,
+                transactionSequence
+            }));
+            updateWorkflowCounts();
+        }
+
+        function createShiftId() {
+            return `SH-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
+        }
+
+        function restoreState() {
+            const serialized = localStorage.getItem(storageKey);
+            if (!serialized) return;
+
+            try {
+                const state = JSON.parse(serialized);
+                heldTransactions = Array.isArray(state.heldTransactions) ? state.heldTransactions : [];
+                transactions = Array.isArray(state.transactions) ? state.transactions : [];
+                shiftHistory = Array.isArray(state.shiftHistory) ? state.shiftHistory : [];
+                activeShift = state.activeShift ?? null;
+                transactionSequence = Number(state.transactionSequence) || 0;
+                if (activeShift) {
+                    activeShift.id ||= createShiftId();
+                    activeShift.transactionIds ||= [];
+                    activeShift.adjustments ||= [];
+                    transactions
+                        .filter((transaction) => activeShift.transactionIds.includes(transaction.id))
+                        .forEach((transaction) => {
+                            transaction.shiftId ||= activeShift.id;
+                            (transaction.returns || []).forEach((entry) => {
+                                entry.shiftId ||= activeShift.id;
+                            });
+                        });
+                }
+            } catch (error) {
+                console.error('Data demo kasir tidak dapat dibaca dari penyimpanan lokal.', error);
+                notify('Data kasir tersimpan rusak dan tidak dapat dimuat. Data contoh dimulai ulang.');
+                localStorage.removeItem(storageKey);
+            }
+        }
+
+        const hasSavedState = localStorage.getItem(storageKey) !== null;
+        restoreState();
+        if (!hasSavedState) {
+            activeShift = { id: createShiftId(), openedAt: new Date().toISOString(), openingBalance: 0, transactionIds: [], adjustments: [] };
+        }
+        transactionNumber = nextTransactionNumber();
+        document.getElementById('transaction-number').textContent = transactionNumber;
+
+        function updateClock() {
+            document.getElementById('clock').textContent = new Intl.DateTimeFormat('id-ID', {
+                weekday: 'short', day: '2-digit', month: 'short', year: 'numeric',
+                hour: '2-digit', minute: '2-digit', second: '2-digit'
+            }).format(new Date());
+        }
+
+        updateClock();
+        window.setInterval(updateClock, 1000);
+
+        function notify(message) {
+            const notice = document.getElementById('notice');
+            document.getElementById('notice-message').textContent = message;
+            notice.classList.add('show');
+            window.clearTimeout(noticeTimer);
+            noticeTimer = window.setTimeout(() => notice.classList.remove('show'), 2600);
+        }
+
+        function showProducts(query = '') {
+            const normalizedQuery = query.trim().toLocaleLowerCase('id');
+            const matches = products.filter((product) => (
+                product.name.toLocaleLowerCase('id').includes(normalizedQuery) ||
+                product.code.toLocaleLowerCase('id').includes(normalizedQuery)
+            ));
+
+            results.innerHTML = matches.length
+                ? matches.map((product) => `
+                    <button class="product-option" type="button" role="option" data-product-id="${product.id}" ${product.stock < 1 ? 'disabled' : ''}>
+                        <span>
+                            <span class="product-option-name">${safe(product.name)}</span>
+                            <span class="product-option-meta">Kode ${safe(product.code)} · Stok ${product.stock}</span>
+                        </span>
+                        <span class="product-option-price">${money(product.price)}</span>
+                    </button>
+                `).join('')
+                : '<div class="px-3 py-3 text-secondary small">Barang tidak ditemukan.</div>';
+            results.classList.add('open');
+        }
+
+        function addProduct(id) {
+            if (!activeShift) {
+                notify('Kasir sedang tutup. Buka kasir sebelum memulai transaksi.');
+                return;
+            }
+            const product = products.find((item) => item.id === id);
+            if (!product) return;
+            const currentQuantity = cart.get(id)?.quantity ?? 0;
+
+            if (currentQuantity >= product.stock) {
+                notify('Jumlah barang sudah mencapai stok yang tersedia.');
+                return;
+            }
+
+            cart.set(id, { product, quantity: currentQuantity + 1 });
+            searchInput.value = '';
+            results.classList.remove('open');
+            renderCart();
+            searchInput.focus();
+        }
+
+        function renderCart() {
+            const items = Array.from(cart.values());
+            const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('item-count').textContent = totalQuantity;
+            document.getElementById('summary-items').textContent = totalQuantity;
+
+            if (!items.length) {
+                cartContent.innerHTML = `
+                    <div class="empty-cart">
+                        <div><i class="bi bi-cart-x"></i><strong>Keranjang masih kosong</strong><span>Cari atau scan barang untuk memulai transaksi.</span></div>
+                    </div>
+                `;
+            } else {
+                cartContent.innerHTML = `
+                    <table class="cart-table">
+                        <thead>
+                            <tr>
+                                <th>No</th><th>Barang</th><th class="text-end">Harga</th><th>Qty</th>
+                                <th class="text-end">Subtotal</th><th aria-label="Aksi"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${items.map(({ product, quantity }, index) => `
+                                <tr>
+                                    <td>${index + 1}</td>
+                                    <td><div class="cart-product">${safe(product.name)}</div><div class="cart-product-meta">Kode ${safe(product.code)}</div></td>
+                                    <td class="number">${money(product.price)}</td>
+                                    <td>
+                                        <span class="qty-control">
+                                            <button type="button" data-qty="minus" data-id="${product.id}" aria-label="Kurangi ${safe(product.name)}">−</button>
+                                            <span class="qty-value">${quantity}</span>
+                                            <button type="button" data-qty="plus" data-id="${product.id}" aria-label="Tambah ${safe(product.name)}">+</button>
+                                        </span>
+                                    </td>
+                                    <td class="number">${money(product.price * quantity)}</td>
+                                    <td><button class="remove-item" type="button" data-remove="${product.id}" aria-label="Hapus ${safe(product.name)}"><i class="bi bi-trash3"></i></button></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            }
+            updateTotals();
+        }
+
+        function readAmount(id) {
+            return Math.max(0, Number(document.getElementById(id).value) || 0);
+        }
+
+        function getTotals() {
+            const subtotal = Array.from(cart.values()).reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+            const discountPercent = Math.min(100, readAmount('discount-percent'));
+            const percentDiscount = Math.round(subtotal * discountPercent / 100);
+            const fixedDiscount = Math.min(subtotal - percentDiscount, readAmount('discount-amount'));
+            const tax = readAmount('tax-amount');
+            const fees = readAmount('other-fees');
+            const total = Math.max(0, subtotal - percentDiscount - fixedDiscount + tax + fees);
+            const paid = readAmount('amount-paid');
+
+            return {
+                subtotal,
+                percentDiscount,
+                fixedDiscount,
+                tax,
+                fees,
+                total,
+                paid,
+                change: Math.max(0, paid - total),
+                insufficient: paid < total
+            };
+        }
+
+        function updateTotals() {
+            const totals = getTotals();
+            document.getElementById('subtotal').textContent = money(totals.subtotal);
+            document.getElementById('grand-total').textContent = money(totals.total);
+            document.getElementById('change-value').textContent = totals.insufficient && totals.paid > 0
+                ? `Kurang ${money(totals.total - totals.paid)}`
+                : money(totals.change);
+
+            const changeBox = document.getElementById('change-box');
+            changeBox.classList.toggle('insufficient', totals.insufficient && totals.paid > 0);
+            document.getElementById('change-label').textContent = totals.insufficient && totals.paid > 0 ? 'Pembayaran kurang' : 'Kembalian';
+            document.getElementById('pay-button').disabled = !activeShift || cart.size === 0 || totals.paid < totals.total;
+        }
+
+        function changeQuantity(id, delta) {
+            const item = cart.get(id);
+            if (!item) return;
+            const nextQuantity = item.quantity + delta;
+
+            if (nextQuantity < 1) cart.delete(id);
+            else if (nextQuantity > item.product.stock) notify('Jumlah barang sudah mencapai stok yang tersedia.');
+            else item.quantity = nextQuantity;
+
+            renderCart();
+        }
+
+        function clearTransaction() {
+            cart.clear();
+            document.getElementById('customer-type').value = 'Umum';
+            document.getElementById('member-contact').value = '';
+            document.getElementById('discount-percent').value = '0';
+            document.getElementById('discount-amount').value = '0';
+            document.getElementById('tax-amount').value = '0';
+            document.getElementById('other-fees').value = '0';
+            amountPaidInput.value = '0';
+            setPaymentMethod('Tunai');
+            renderCart();
+        }
+
+        function holdCurrentTransaction() {
+            if (!activeShift) {
+                notify('Kasir sedang tutup. Buka kasir untuk membuat transaksi.');
+                return;
+            }
+            if (!cart.size) {
+                notify('Keranjang masih kosong, tidak ada transaksi untuk ditahan.');
+                return;
+            }
+
+            const totals = getTotals();
+            heldTransactions.push({
+                id: transactionNumber,
+                heldAt: new Date().toISOString(),
+                customer: document.getElementById('customer-type').value,
+                contact: document.getElementById('member-contact').value,
+                items: Array.from(cart.values()).map(({ product, quantity }) => ({ productId: product.id, quantity })),
+                discountPercent: readAmount('discount-percent'),
+                discountAmount: readAmount('discount-amount'),
+                tax: readAmount('tax-amount'),
+                fees: readAmount('other-fees'),
+                paid: totals.paid,
+                method: paymentMethod,
+                total: totals.total
+            });
+
+            const heldId = transactionNumber;
+            transactionNumber = nextTransactionNumber();
+            document.getElementById('transaction-number').textContent = transactionNumber;
+            clearTransaction();
+            saveState();
+            renderHeldTransactions();
+            notify(`Transaksi ${heldId} ditahan.`);
+        }
+
+        function restoreHeldTransaction(id) {
+            if (!activeShift) {
+                notify('Kasir sedang tutup. Buka kasir sebelum melanjutkan transaksi.');
+                return;
+            }
+            if (cart.size && !window.confirm('Ganti keranjang aktif dengan transaksi yang ditahan? Keranjang aktif akan dikosongkan.')) return;
+
+            const index = heldTransactions.findIndex((held) => held.id === id);
+            if (index < 0) return;
+            const held = heldTransactions[index];
+            const restoredItems = held.items.map((item) => ({
+                item,
+                product: products.find((product) => product.id === item.productId)
+            }));
+
+            const unavailable = restoredItems.find(({ item, product }) => !product || item.quantity > product.stock);
+            if (unavailable) {
+                notify(`Stok ${unavailable.product?.name || 'barang'} tidak lagi mencukupi untuk transaksi ini.`);
+                return;
+            }
+
+            clearTransaction();
+            restoredItems.forEach(({ item, product }) => cart.set(product.id, { product, quantity: item.quantity }));
+            document.getElementById('customer-type').value = held.customer || 'Umum';
+            document.getElementById('member-contact').value = held.contact || '';
+            document.getElementById('discount-percent').value = held.discountPercent || 0;
+            document.getElementById('discount-amount').value = held.discountAmount || 0;
+            document.getElementById('tax-amount').value = held.tax || 0;
+            document.getElementById('other-fees').value = held.fees || 0;
+            amountPaidInput.value = held.paid || 0;
+            setPaymentMethod(held.method || 'Tunai');
+            transactionNumber = held.id;
+            document.getElementById('transaction-number').textContent = transactionNumber;
+            heldTransactions.splice(index, 1);
+            saveState();
+            renderCart();
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('held-modal')).hide();
+            notify(`Transaksi ${id} dilanjutkan.`);
+        }
+
+        function setPaymentMethod(method) {
+            paymentMethod = method;
+            document.querySelectorAll('.method-button').forEach((button) => {
+                const active = button.dataset.method === method;
+                button.classList.toggle('active', active);
+                button.setAttribute('aria-pressed', String(active));
+            });
+        }
+
+        function updateWorkflowCounts() {
+            const count = document.getElementById('held-count');
+            if (count) count.textContent = heldTransactions.length;
+            const shiftLabel = document.getElementById('shift-button-label');
+            if (shiftLabel) shiftLabel.textContent = activeShift ? 'Tutup kasir' : 'Buka kasir';
+            const shiftIcon = document.querySelector('#shift-button i');
+            if (shiftIcon) shiftIcon.className = activeShift ? 'bi bi-door-closed' : 'bi bi-door-open';
+            const registerStatus = document.getElementById('register-status');
+            if (registerStatus) registerStatus.lastChild.textContent = activeShift ? ' Kasir siap' : ' Kasir tutup';
+        }
+
+        function formatDate(value) {
+            return new Intl.DateTimeFormat('id-ID', {
+                day: '2-digit', month: 'short', year: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            }).format(new Date(value));
+        }
+
+        function transactionStatus(transaction) {
+            if (transaction.cancelled) return 'Dibatalkan';
+            if (transaction.refundedAmount > 0) {
+                const fullyReturned = transaction.items.length > 0 && transaction.items.every((item) =>
+                    (transaction.returnedQty?.[item.productId] || 0) >= item.quantity
+                );
+                return fullyReturned ? 'Diretur penuh' : 'Diretur sebagian';
+            }
+            return 'Selesai';
+        }
+
+        function renderHeldTransactions() {
+            const list = document.getElementById('held-list');
+            if (!heldTransactions.length) {
+                list.innerHTML = '<div class="workflow-empty"><i class="bi bi-pause-circle me-1"></i>Belum ada transaksi yang ditahan.</div>';
+                return;
+            }
+
+            list.innerHTML = heldTransactions.map((held) => {
+                const count = held.items.reduce((sum, item) => sum + item.quantity, 0);
+                return `
+                    <article class="workflow-entry">
+                        <div class="workflow-entry-head">
+                            <div><div class="workflow-entry-title">${safe(held.id)}</div><div class="workflow-entry-meta">${formatDate(held.heldAt)} · ${count} item · ${safe(held.customer)}</div></div>
+                            <strong class="workflow-entry-total">${money(held.total)}</strong>
+                        </div>
+                        <div class="workflow-entry-actions">
+                            <button class="btn btn-primary btn-sm" type="button" data-held-restore="${safe(held.id)}"><i class="bi bi-arrow-return-left me-1"></i>Lanjutkan</button>
+                            <button class="btn btn-outline-danger btn-sm" type="button" data-held-delete="${safe(held.id)}">Hapus</button>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        function renderTransactionEntries(targetId, includeReturn) {
+            const list = document.getElementById(targetId);
+            const entries = [...transactions].reverse();
+            if (!entries.length) {
+                list.innerHTML = '<div class="workflow-empty">Belum ada riwayat transaksi di browser ini.</div>';
+                return;
+            }
+
+            list.innerHTML = entries.map((transaction) => {
+                const returnedItems = transaction.items.reduce((sum, item) => sum + (transaction.returnedQty?.[item.productId] || 0), 0);
+                const status = transactionStatus(transaction);
+                const canReturn = !transaction.cancelled && transaction.items.some((item) => item.quantity > (transaction.returnedQty?.[item.productId] || 0));
+                const canCancel = !transaction.cancelled && !(transaction.refundedAmount > 0);
+                const actionButtons = includeReturn
+                    ? `<button class="btn btn-warning btn-sm" type="button" data-return-start="${safe(transaction.id)}" ${canReturn ? '' : 'disabled'}><i class="bi bi-arrow-counterclockwise me-1"></i>Retur barang</button>`
+                    : `
+                        <button class="btn btn-outline-warning btn-sm" type="button" data-return-start="${safe(transaction.id)}" ${canReturn ? '' : 'disabled'}><i class="bi bi-arrow-counterclockwise me-1"></i>Retur</button>
+                        <button class="btn btn-outline-danger btn-sm" type="button" data-transaction-cancel="${safe(transaction.id)}" ${canCancel ? '' : 'disabled'}><i class="bi bi-x-circle me-1"></i>Batalkan transaksi</button>
+                    `;
+
+                return `
+                    <article class="workflow-entry">
+                        <div class="workflow-entry-head">
+                            <div>
+                                <div class="workflow-entry-title">${safe(transaction.id)} <span class="badge ${transaction.cancelled ? 'text-bg-danger' : (transaction.refundedAmount > 0 ? 'text-bg-warning' : 'text-bg-success')} ms-1">${status}</span></div>
+                                <div class="workflow-entry-meta">${formatDate(transaction.createdAt)} · ${transaction.items.length} jenis barang · ${safe(transaction.method)} · ${returnedItems} diretur</div>
+                            </div>
+                            <strong class="workflow-entry-total">${money(transaction.cancelled ? 0 : transaction.total - (transaction.refundedAmount || 0))}</strong>
+                        </div>
+                        <div class="workflow-entry-meta">${transaction.items.map((item) => `${safe(item.name)} × ${item.quantity}`).join(' · ')}</div>
+                        <div class="workflow-entry-actions">${actionButtons}</div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        function findTransaction(id) {
+            return transactions.find((transaction) => transaction.id === id);
+        }
+
+        function restoreStock(transaction, item, quantity) {
+            const product = products.find((product) => product.id === item.productId);
+            if (product) product.stock += quantity;
+        }
+
+        function cancelCompletedTransaction(id) {
+            const transaction = findTransaction(id);
+            if (!transaction || transaction.cancelled || transaction.refundedAmount > 0) return;
+            if (!activeShift) {
+                notify('Buka kasir terlebih dahulu untuk membatalkan transaksi.');
+                return;
+            }
+            if (!window.confirm(`Batalkan transaksi ${id}? Stok barang akan dikembalikan.`)) return;
+
+            transaction.items.forEach((item) => restoreStock(transaction, item, item.quantity));
+            transaction.cancelled = true;
+            transaction.cancelledAt = new Date().toISOString();
+            if (transaction.shiftId !== activeShift.id) {
+                activeShift.adjustments.push({ method: transaction.method, amount: transaction.total, type: 'cancellation' });
+            }
+            saveState();
+            renderHistory();
+            notify('Transaksi dibatalkan dan stok sudah dikembalikan.');
+        }
+
+        function renderHistory() {
+            renderTransactionEntries('history-list', false);
+            renderTransactionEntries('returns-list', true);
+        }
+
+        function openReturn(id) {
+            const transaction = findTransaction(id);
+            if (!transaction || transaction.cancelled) return;
+            if (!activeShift) {
+                notify('Buka kasir terlebih dahulu untuk memproses retur.');
+                return;
+            }
+            returnTargetId = id;
+            document.getElementById('return-transaction-label').textContent = `${transaction.id} · ${formatDate(transaction.createdAt)}`;
+            document.getElementById('return-lines').innerHTML = transaction.items.map((item) => {
+                const returned = transaction.returnedQty?.[item.productId] || 0;
+                const available = item.quantity - returned;
+                return `
+                    <label class="return-line">
+                        <span><strong class="d-block small">${safe(item.name)}</strong><span class="text-secondary small">${money(item.price)} · ${available} dapat diretur</span></span>
+                        <span class="return-quantity"><input class="form-control return-quantity-input" type="number" min="0" max="${available}" value="0" data-product-id="${item.productId}" aria-label="Jumlah retur ${safe(item.name)}"></span>
+                    </label>
+                `;
+            }).join('');
+            updateReturnEstimate();
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('history-modal')).hide();
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('returns-modal')).hide();
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('return-detail-modal')).show();
+        }
+
+        function getReturnSelection() {
+            const transaction = findTransaction(returnTargetId);
+            if (!transaction) return { transaction: null, quantities: {}, refund: 0, selectedCount: 0 };
+            const quantities = {};
+            let selectedCount = 0;
+            let grossSelected = 0;
+            let grossAll = 0;
+            let remainingCount = 0;
+
+            transaction.items.forEach((item) => {
+                const remaining = item.quantity - (transaction.returnedQty?.[item.productId] || 0);
+                const input = document.querySelector(`.return-quantity-input[data-product-id="${item.productId}"]`);
+                const quantity = Math.min(remaining, Math.max(0, Number(input?.value) || 0));
+                quantities[item.productId] = quantity;
+                selectedCount += quantity;
+                remainingCount += remaining;
+                grossSelected += quantity * item.price;
+                grossAll += item.quantity * item.price;
+            });
+
+            const refund = selectedCount === remainingCount && remainingCount > 0
+                ? transaction.total - (transaction.refundedAmount || 0)
+                : Math.min(
+                    transaction.total - (transaction.refundedAmount || 0),
+                    Math.round(grossSelected * (grossAll > 0 ? transaction.total / grossAll : 0))
+                );
+
+            return { transaction, quantities, refund, selectedCount };
+        }
+
+        function updateReturnEstimate() {
+            const selection = getReturnSelection();
+            document.getElementById('return-estimate').textContent = money(selection.refund);
+            document.getElementById('confirm-return').disabled = selection.selectedCount === 0 || selection.refund < 0;
+        }
+
+        function processReturn() {
+            const selection = getReturnSelection();
+            const transaction = selection.transaction;
+            if (!transaction || !activeShift || selection.selectedCount < 1) return;
+
+            Object.entries(selection.quantities).forEach(([productId, quantity]) => {
+                if (!quantity) return;
+                const item = transaction.items.find((line) => line.productId === Number(productId));
+                if (!item) return;
+                transaction.returnedQty[productId] = (transaction.returnedQty[productId] || 0) + quantity;
+                restoreStock(transaction, item, quantity);
+            });
+
+            transaction.refundedAmount = (transaction.refundedAmount || 0) + selection.refund;
+            transaction.returns = transaction.returns || [];
+            transaction.returns.push({
+                returnedAt: new Date().toISOString(),
+                shiftId: activeShift.id,
+                quantities: selection.quantities,
+                amount: selection.refund
+            });
+
+            saveState();
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('return-detail-modal')).hide();
+            renderHistory();
+            notify(`Retur dicatat. Nilai pengembalian ${money(selection.refund)}.`);
+        }
+
+        function calculateShift() {
+            const methods = ['Tunai', 'QRIS', 'Debit', 'Kredit', 'E-Wallet', 'Transfer'];
+            const totals = Object.fromEntries(methods.map((method) => [method, 0]));
+            let grossSales = 0;
+            let refunds = 0;
+
+            (activeShift?.transactionIds || []).forEach((id) => {
+                const transaction = findTransaction(id);
+                if (!transaction || transaction.cancelled) return;
+                totals[transaction.method] = (totals[transaction.method] || 0) + transaction.total;
+                grossSales += transaction.total;
+            });
+            transactions.forEach((transaction) => {
+                (transaction.returns || [])
+                    .filter((entry) => entry.shiftId === activeShift?.id)
+                    .forEach((entry) => {
+                        totals[transaction.method] = (totals[transaction.method] || 0) - entry.amount;
+                        refunds += entry.amount;
+                    });
+            });
+            (activeShift?.adjustments || []).forEach((adjustment) => {
+                totals[adjustment.method] = (totals[adjustment.method] || 0) - adjustment.amount;
+                refunds += adjustment.amount;
+            });
+
+            const opening = Math.max(0, Number(activeShift?.openingBalance) || 0);
+            const expectedCash = opening + (totals.Tunai || 0);
+            return { methods, totals, grossSales, refunds, opening, expectedCash };
+        }
+
+        function updateCashDifference() {
+            const expectedCash = calculateShift().expectedCash;
+            const actual = Math.max(0, Number(document.getElementById('closing-balance').value) || 0);
+            const difference = actual - expectedCash;
+            const output = document.getElementById('cash-difference');
+            output.textContent = `${difference > 0 ? '+' : ''}${signedMoney(difference)}`;
+            output.classList.toggle('text-danger', difference < 0);
+            output.classList.toggle('text-success', difference >= 0);
+        }
+
+        function openShiftDialog() {
+            const isOpen = Boolean(activeShift);
+            document.getElementById('shift-title').textContent = isOpen ? 'Tutup kasir' : 'Buka kasir';
+            document.getElementById('shift-confirm').textContent = isOpen ? 'Tutup & simpan laporan' : 'Buka kasir';
+            document.getElementById('shift-open-fields').style.display = 'block';
+            document.getElementById('shift-close-fields').style.display = isOpen ? 'block' : 'none';
+            const lastClosure = shiftHistory.at(-1);
+            const lastClosureElement = document.getElementById('last-closure');
+            lastClosureElement.style.display = !isOpen && lastClosure ? 'block' : 'none';
+            if (!isOpen && lastClosure) {
+                lastClosureElement.innerHTML = `
+                    <div class="workflow-entry-title">Laporan kas terakhir</div>
+                    <div class="workflow-entry-meta">${formatDate(lastClosure.closedAt)} · ${lastClosure.transactionCount} transaksi</div>
+                    <div class="summary-line mt-2 mb-0"><span>Saldo akhir</span><strong>${money(lastClosure.closingBalance)}</strong></div>
+                    <div class="summary-line mt-2 mb-0"><span>Selisih</span><strong>${signedMoney(lastClosure.difference)}</strong></div>
+                `;
+            }
+            document.getElementById('opening-balance').value = isOpen ? activeShift.openingBalance : 0;
+
+            if (isOpen) {
+                const summary = calculateShift();
+                document.getElementById('shift-opening-display').textContent = money(summary.opening);
+                document.getElementById('shift-breakdown').innerHTML = summary.methods.map((method) => `
+                    <div class="summary-line"><span>${safe(method)}</span><strong>${signedMoney(summary.totals[method])}</strong></div>
+                `).join('') + `
+                    <div class="summary-line border-top pt-2"><span>Total penjualan kotor</span><strong>${money(summary.grossSales)}</strong></div>
+                    <div class="summary-line"><span>Total retur / pembatalan</span><strong>− ${money(summary.refunds)}</strong></div>
+                `;
+                document.getElementById('expected-cash').textContent = money(summary.expectedCash);
+                document.getElementById('closing-balance').value = summary.expectedCash;
+                updateCashDifference();
+            }
+
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('shift-modal')).show();
+        }
+
+        function saveShiftAction() {
+            const opening = Math.max(0, Number(document.getElementById('opening-balance').value) || 0);
+
+            if (!activeShift) {
+                activeShift = { id: createShiftId(), openedAt: new Date().toISOString(), openingBalance: opening, transactionIds: [], adjustments: [] };
+                saveState();
+                bootstrap.Modal.getOrCreateInstance(document.getElementById('shift-modal')).hide();
+                notify('Kasir dibuka. Transaksi baru siap dimulai.');
+                renderCart();
+                return;
+            }
+
+            if (cart.size && !window.confirm('Masih ada barang di keranjang. Tutup kasir dan buang transaksi aktif ini?')) return;
+            const summary = calculateShift();
+            const closingBalance = Math.max(0, Number(document.getElementById('closing-balance').value) || 0);
+            const closure = {
+                id: `CLS-${Date.now()}`,
+                openedAt: activeShift.openedAt,
+                closedAt: new Date().toISOString(),
+                openingBalance: opening,
+                closingBalance,
+                expectedCash: opening + (summary.totals.Tunai || 0),
+                difference: closingBalance - opening - (summary.totals.Tunai || 0),
+                methodTotals: summary.totals,
+                transactionCount: activeShift.transactionIds.length
+            };
+
+            shiftHistory.push(closure);
+            activeShift = null;
+            if (cart.size) clearTransaction();
+            saveState();
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('shift-modal')).hide();
+            notify(`Kasir ditutup. Selisih kas: ${signedMoney(closure.difference)}.`);
+            renderCart();
+        }
+
+        function createReceipt() {
+            const totals = getTotals();
+            const items = Array.from(cart.values());
+            const lines = items.map(({ product, quantity }) => `
+                <div class="receipt-item">
+                    <div>${safe(product.name)}</div>
+                    <div><span>${quantity} x ${money(product.price)}</span><strong>${money(quantity * product.price)}</strong></div>
+                </div>
+            `).join('');
+            document.getElementById('receipt-content').innerHTML = `
+                <h3>MINIMARKET</h3>
+                <p>Terima kasih telah berbelanja</p>
+                <div class="receipt-divider"></div>
+                <div class="receipt-row"><span>No. Transaksi</span><strong>${safe(transactionNumber)}</strong></div>
+                <div class="receipt-row"><span>Waktu</span><span>${safe(new Date().toLocaleString('id-ID'))}</span></div>
+                <div class="receipt-row"><span>Pelanggan</span><span>${safe(document.getElementById('customer-type').value)}</span></div>
+                <div class="receipt-divider"></div>
+                ${lines}
+                <div class="receipt-divider"></div>
+                <div class="receipt-row"><span>Subtotal</span><strong>${money(totals.subtotal)}</strong></div>
+                <div class="receipt-row"><span>Diskon</span><span>− ${money(totals.percentDiscount + totals.fixedDiscount)}</span></div>
+                <div class="receipt-row"><span>Pajak &amp; biaya</span><span>${money(totals.tax + totals.fees)}</span></div>
+                <div class="receipt-row"><strong>Total</strong><strong>${money(totals.total)}</strong></div>
+                <div class="receipt-row"><span>${safe(paymentMethod)}</span><span>Dibayar ${money(totals.paid)}</span></div>
+                <div class="receipt-row"><span>Kembalian</span><strong>${money(totals.change)}</strong></div>
+                <div class="receipt-divider"></div>
+                <p>Barang yang sudah dibeli tidak dapat ditukar.</p>
+            `;
+        }
+
+        searchInput.addEventListener('input', () => showProducts(searchInput.value));
+        searchInput.addEventListener('focus', () => showProducts(searchInput.value));
+        searchInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const firstAvailable = results.querySelector('.product-option:not(:disabled)');
+                if (firstAvailable) addProduct(Number(firstAvailable.dataset.productId));
+                else notify('Barang tidak ditemukan atau stok sedang habis.');
+            }
+            if (event.key === 'Escape') results.classList.remove('open');
+        });
+        document.getElementById('search-button').addEventListener('click', () => {
+            showProducts(searchInput.value);
+            searchInput.focus();
+        });
+
+        results.addEventListener('click', (event) => {
+            const option = event.target.closest('[data-product-id]');
+            if (option && !option.disabled) addProduct(Number(option.dataset.productId));
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!event.target.closest('.search-row') && !event.target.closest('#product-results')) {
+                results.classList.remove('open');
+            }
+        });
+
+        cartContent.addEventListener('click', (event) => {
+            const quantityButton = event.target.closest('[data-qty]');
+            const removeButton = event.target.closest('[data-remove]');
+            if (quantityButton) {
+                changeQuantity(Number(quantityButton.dataset.id), quantityButton.dataset.qty === 'plus' ? 1 : -1);
+            }
+            if (removeButton) {
+                cart.delete(Number(removeButton.dataset.remove));
+                renderCart();
+            }
+        });
+
+        document.querySelectorAll('.money-input').forEach((input) => input.addEventListener('input', updateTotals));
+        amountPaidInput.addEventListener('input', updateTotals);
+
+        document.querySelectorAll('.method-button').forEach((button) => {
+            button.addEventListener('click', () => setPaymentMethod(button.dataset.method));
+        });
+
+        document.querySelectorAll('[data-cash]').forEach((button) => {
+            button.addEventListener('click', () => {
+                const totals = getTotals();
+                amountPaidInput.value = button.dataset.cash === 'exact' ? totals.total : button.dataset.cash;
+                updateTotals();
+            });
+        });
+
+        document.getElementById('hold-button').addEventListener('click', () => {
+            holdCurrentTransaction();
+        });
+
+        document.getElementById('cancel-button').addEventListener('click', () => {
+            if (!cart.size) {
+                notify('Keranjang sudah kosong.');
+                return;
+            }
+            if (window.confirm('Batalkan transaksi ini dan kosongkan keranjang?')) {
+                clearTransaction();
+                transactionNumber = nextTransactionNumber();
+                document.getElementById('transaction-number').textContent = transactionNumber;
+                saveState();
+                notify('Transaksi dibatalkan.');
+            }
+        });
+
+        document.getElementById('pay-button').addEventListener('click', () => {
+            if (!activeShift || !cart.size || getTotals().insufficient) return;
+            const totals = getTotals();
+            const items = Array.from(cart.values()).map(({ product, quantity }) => ({
+                productId: product.id,
+                name: product.name,
+                code: product.code,
+                price: product.price,
+                quantity
+            }));
+            if (items.some((item) => {
+                const product = products.find((entry) => entry.id === item.productId);
+                return !product || item.quantity > product.stock;
+            })) {
+                notify('Stok produk berubah. Periksa kembali jumlah barang di keranjang.');
+                return;
+            }
+
+            const completedAt = new Date().toISOString();
+            const transaction = {
+                id: transactionNumber,
+                shiftId: activeShift.id,
+                createdAt: completedAt,
+                customer: document.getElementById('customer-type').value,
+                contact: document.getElementById('member-contact').value,
+                items,
+                subtotal: totals.subtotal,
+                discount: totals.percentDiscount + totals.fixedDiscount,
+                tax: totals.tax,
+                fees: totals.fees,
+                total: totals.total,
+                paid: totals.paid,
+                change: totals.change,
+                method: paymentMethod,
+                returnedQty: {},
+                refundedAmount: 0,
+                cancelled: false
+            };
+
+            createReceipt();
+            items.forEach((item) => {
+                const product = products.find((entry) => entry.id === item.productId);
+                product.stock -= item.quantity;
+            });
+            transactions.push(transaction);
+            activeShift.transactionIds.push(transaction.id);
+            transactionNumber = nextTransactionNumber();
+            document.getElementById('transaction-number').textContent = transactionNumber;
+            saveState();
+            clearTransaction();
+            renderHistory();
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('receipt-modal')).show();
+        });
+
+        document.getElementById('print-receipt').addEventListener('click', () => window.print());
+
+        document.getElementById('held-modal').addEventListener('show.bs.modal', renderHeldTransactions);
+        document.getElementById('history-modal').addEventListener('show.bs.modal', renderHistory);
+        document.getElementById('returns-modal').addEventListener('show.bs.modal', renderHistory);
+
+        document.getElementById('held-list').addEventListener('click', (event) => {
+            const restoreButton = event.target.closest('[data-held-restore]');
+            const deleteButton = event.target.closest('[data-held-delete]');
+            if (restoreButton) restoreHeldTransaction(restoreButton.dataset.heldRestore);
+            if (deleteButton) {
+                heldTransactions = heldTransactions.filter((held) => held.id !== deleteButton.dataset.heldDelete);
+                saveState();
+                renderHeldTransactions();
+                notify('Transaksi yang ditahan dihapus.');
+            }
+        });
+
+        ['history-list', 'returns-list'].forEach((listId) => {
+            document.getElementById(listId).addEventListener('click', (event) => {
+                const returnButton = event.target.closest('[data-return-start]');
+                const cancelButton = event.target.closest('[data-transaction-cancel]');
+                if (returnButton) openReturn(returnButton.dataset.returnStart);
+                if (cancelButton) cancelCompletedTransaction(cancelButton.dataset.transactionCancel);
+            });
+        });
+
+        document.getElementById('return-lines').addEventListener('input', updateReturnEstimate);
+        document.getElementById('confirm-return').addEventListener('click', processReturn);
+        document.getElementById('shift-button').addEventListener('click', openShiftDialog);
+        document.getElementById('shift-confirm').addEventListener('click', saveShiftAction);
+        document.getElementById('closing-balance').addEventListener('input', updateCashDifference);
+        document.getElementById('opening-balance').addEventListener('input', () => {
+            if (!activeShift) return;
+            const previousExpected = calculateShift().expectedCash;
+            const actualBalance = Math.max(0, Number(document.getElementById('closing-balance').value) || 0);
+            activeShift.openingBalance = Math.max(0, Number(document.getElementById('opening-balance').value) || 0);
+            document.getElementById('shift-opening-display').textContent = money(activeShift.openingBalance);
+            const nextExpected = calculateShift().expectedCash;
+            document.getElementById('expected-cash').textContent = money(nextExpected);
+            if (actualBalance === previousExpected) document.getElementById('closing-balance').value = nextExpected;
+            updateCashDifference();
+            saveState();
+        });
+
+        updateWorkflowCounts();
+        renderHeldTransactions();
+        renderHistory();
+        renderCart();
+    </script>
+</body>
+</html>

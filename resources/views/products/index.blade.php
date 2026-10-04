@@ -1,718 +1,704 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>MiniMarket ✨</title>
-
+    <title>Katalog Produk | MiniMarket</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
+        :root {
+            color-scheme: dark;
+            --background: #080a12;
+            --surface: rgba(18, 21, 34, 0.86);
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #f4f3fb;
+            --muted: #9495aa;
+            --violet: #a78bfa;
+            --cyan: #67e8f9;
+            --green: #6ee7b7;
+            --orange: #fbbf72;
+            --red: #fb7185;
         }
 
+        * { box-sizing: border-box; }
+
         body {
-            background: #f8f8f8;
-            color: #333;
+            margin: 0;
+            min-height: 100vh;
+            color: var(--text);
+            background:
+                radial-gradient(ellipse at 78% 5%, rgba(111, 82, 208, .18), transparent 28rem),
+                radial-gradient(ellipse at 4% 44%, rgba(46, 127, 155, .10), transparent 25rem),
+                var(--background);
+            font-family: 'DM Sans', sans-serif;
             overflow-x: hidden;
         }
 
-        /* ================= NAVBAR ================= */
-
-        .navbar {
-            background: linear-gradient(120deg, #ee4d2d, #ff7337, #ff9a5c);
-            padding: 18px 7%;
-            color: white;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 20px rgba(238, 77, 45, .25);
+        body::before {
+            position: fixed;
+            z-index: -1;
+            inset: 0;
+            content: '';
+            opacity: .2;
+            background-image: radial-gradient(rgba(255,255,255,.17) .7px, transparent .7px);
+            background-size: 23px 23px;
+            mask-image: linear-gradient(to bottom, black, transparent 72%);
+            pointer-events: none;
         }
 
-        .nav-content {
+        a { color: inherit; text-decoration: none; }
+        button, input { font: inherit; }
+
+        .page {
+            position: relative;
+            isolation: isolate;
+            min-height: 100vh;
+            padding: 26px clamp(16px, 4vw, 58px) 44px;
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            z-index: -1;
+            border-radius: 50%;
+            filter: blur(40px);
+            pointer-events: none;
+            animation: drift 12s ease-in-out infinite;
+        }
+
+        .orb-one {
+            top: 15%;
+            right: 10%;
+            width: 220px;
+            height: 220px;
+            background: rgba(139,109,255,.15);
+        }
+
+        .orb-two {
+            top: 48%;
+            left: -90px;
+            width: 240px;
+            height: 240px;
+            background: rgba(103,232,249,.1);
+            animation-delay: 3s;
+        }
+
+        @keyframes drift {
+            0%, 100% { transform: translate3d(0,0,0); }
+            50% { transform: translate3d(0,-18px,0); }
+        }
+
+        .topbar, .main, .footer { width: min(1320px, 100%); margin-inline: auto; }
+
+        .topbar {
             display: flex;
             align-items: center;
-            gap: 30px;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 38px;
         }
 
-        .logo {
-            font-size: 27px;
-            font-weight: bold;
-            white-space: nowrap;
-            animation: logoBounce 2s infinite;
+        .brand {
+            display: inline-flex;
+            flex: 0 0 auto;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Manrope', sans-serif;
+            font-size: 1rem;
+            font-weight: 800;
+            letter-spacing: -.03em;
         }
 
-        @keyframes logoBounce {
-            0%,100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-4px);
-            }
+        .brand-icon {
+            display: grid;
+            width: 42px;
+            height: 42px;
+            place-items: center;
+            border: 1px solid rgba(255,255,255,.2);
+            border-radius: 14px;
+            color: #0b1118;
+            background: linear-gradient(145deg, #a5f3fc, #a78bfa 78%);
+            box-shadow: 0 8px 30px rgba(167,139,250,.24);
         }
 
-        .search-box {
-            flex: 1;
+        .brand-caption {
+            display: block;
+            margin-top: 1px;
+            color: var(--muted);
+            font-family: 'DM Sans', sans-serif;
+            font-size: .65rem;
+            font-weight: 600;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+        }
+
+        .search {
             display: flex;
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,.15);
-            transition: .3s;
+            width: min(470px, 50vw);
+            height: 46px;
+            align-items: center;
+            gap: 10px;
+            padding: 0 14px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: rgba(255,255,255,.045);
+            transition: border-color .2s, box-shadow .2s, background .2s;
         }
 
-        .search-box:focus-within {
-            transform: scale(1.02);
-            box-shadow: 0 0 0 4px rgba(255,255,255,.3);
+        .search:focus-within {
+            border-color: rgba(167,139,250,.65);
+            background: rgba(255,255,255,.065);
+            box-shadow: 0 0 0 4px rgba(167,139,250,.1);
         }
 
-        .search-box input {
-            flex: 1;
-            border: none;
-            outline: none;
-            padding: 14px 18px;
-            font-size: 14px;
+        .search i { color: #b5a1f9; }
+
+        .search input {
+            width: 100%;
+            border: 0;
+            outline: 0;
+            color: var(--text);
+            background: transparent;
+            font-size: .82rem;
         }
 
-        .search-box button {
-            width: 60px;
-            border: none;
-            background: #ee4d2d;
+        .search input::placeholder { color: #85869a; }
+
+        .top-actions { display: flex; align-items: center; gap: 10px; }
+
+        .nav-link {
+            display: inline-flex;
+            min-height: 42px;
+            align-items: center;
+            gap: 8px;
+            padding: 0 14px;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            color: #d1cde0;
+            background: rgba(255,255,255,.035);
+            font-size: .8rem;
+            font-weight: 700;
+            transition: background .2s, transform .2s;
+        }
+
+        .nav-link:hover {
+            transform: translateY(-2px);
             color: white;
-            font-size: 20px;
-            cursor: pointer;
-            transition: .3s;
+            background: rgba(255,255,255,.08);
         }
-
-        .search-box button:hover {
-            background: #d9361e;
-            transform: scale(1.1);
-        }
-
-        .cart {
-            font-size: 27px;
-            cursor: pointer;
-            transition: .3s;
-        }
-
-        .cart:hover {
-            transform: scale(1.25) rotate(-10deg);
-        }
-
-
-        /* ================= HERO ================= */
 
         .hero {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 50px;
-            border-radius: 20px;
-
-            background:
-                linear-gradient(
-                    120deg,
-                    rgba(238,77,45,.95),
-                    rgba(255,150,90,.95)
-                );
-
-            color: white;
-
+            position: relative;
             display: flex;
+            min-height: 274px;
             align-items: center;
             justify-content: space-between;
-
+            gap: 24px;
+            padding: clamp(27px, 5vw, 54px);
+            margin-bottom: 27px;
             overflow: hidden;
-            position: relative;
-
-            box-shadow: 0 15px 40px rgba(238,77,45,.25);
-
-            animation: heroIn .8s ease;
+            border: 1px solid rgba(255,255,255,.11);
+            border-radius: 28px;
+            background: linear-gradient(112deg, rgba(27,26,45,.98), rgba(23,25,40,.95) 52%, rgba(35,29,63,.9));
+            box-shadow: 0 28px 80px rgba(0,0,0,.3);
+            animation: arrive .65s ease both;
         }
 
-        @keyframes heroIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        @keyframes arrive {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
         }
+
+        .hero::before {
+            position: absolute;
+            top: -210px;
+            right: 8%;
+            width: 470px;
+            height: 470px;
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: 50%;
+            content: '';
+            box-shadow: 0 0 0 36px rgba(255,255,255,.018), 0 0 0 76px rgba(255,255,255,.014);
+            pointer-events: none;
+        }
+
+        .hero::after {
+            position: absolute;
+            top: 50%;
+            right: 17%;
+            width: 122px;
+            height: 122px;
+            border-radius: 50%;
+            content: '';
+            background: radial-gradient(circle at 30% 25%, #e0caff, #a78bfa 36%, #6944d2 72%);
+            box-shadow: inset -17px -22px 36px rgba(25,9,78,.52), 0 0 70px rgba(167,139,250,.35);
+            transform: translateY(-50%);
+            animation: planet-float 7s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes planet-float {
+            0%, 100% { transform: translateY(-50%) rotate(-8deg); }
+            50% { transform: translateY(calc(-50% - 10px)) rotate(5deg); }
+        }
+
+        .hero-copy { position: relative; z-index: 1; max-width: 680px; }
+
+        .eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin: 0 0 14px;
+            color: #c4b5fd;
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+        }
+
+        .eyebrow::before { width: 22px; height: 1px; content: ''; background: var(--violet); }
+
+        h1, h2, h3, p { margin-top: 0; }
 
         .hero h1 {
-            font-size: 40px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
+            font-family: 'Manrope', sans-serif;
+            font-size: clamp(2.2rem, 5vw, 3.9rem);
+            font-weight: 800;
+            letter-spacing: -.07em;
+            line-height: 1.02;
         }
 
-        .hero p {
-            font-size: 17px;
-            opacity: .95;
+        .hero h1 span {
+            color: transparent;
+            background: linear-gradient(90deg, #b8a2ff, #72e5f4);
+            background-clip: text;
+            -webkit-background-clip: text;
         }
 
-        .hero-icon {
-            font-size: 110px;
-            animation: float 3s ease-in-out infinite;
-            filter: drop-shadow(0 10px 10px rgba(0,0,0,.15));
-        }
+        .hero-copy > p:not(.eyebrow) { max-width: 540px; margin: 0; color: #b5b3c7; line-height: 1.7; }
 
-        @keyframes float {
-            0%,100% {
-                transform: translateY(0) rotate(0);
-            }
-
-            50% {
-                transform: translateY(-15px) rotate(5deg);
-            }
-        }
-
-        .circle {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: rgba(255,255,255,.08);
-            right: -50px;
-            top: -50px;
-        }
-
-
-        /* ================= CATEGORY ================= */
-
-        .category {
-            max-width: 1200px;
-            margin: 25px auto;
-            background: white;
-            padding: 25px;
-            border-radius: 18px;
-            box-shadow: 0 5px 20px rgba(0,0,0,.05);
-
-            animation: fadeUp .8s ease;
-        }
-
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(25px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .category h2 {
-            margin-bottom: 20px;
-        }
-
-        .category-list {
+        .hero-meta {
+            position: relative;
+            z-index: 1;
             display: flex;
-            justify-content: space-around;
-            gap: 20px;
+            flex: 0 0 auto;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+            color: rgba(255,255,255,.65);
+            font-size: .75rem;
         }
 
-        .category-item {
-            text-align: center;
-            cursor: pointer;
-            transition: .3s;
+        .catalog-count {
+            color: white;
+            font-family: 'Manrope', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -.06em;
         }
 
-        .category-item:hover {
-            transform: translateY(-8px);
-        }
-
-        .category-icon {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-
-            background: linear-gradient(
-                135deg,
-                #fff1ed,
-                #ffe0d6
-            );
-
+        .section-head {
             display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-size: 32px;
-
-            margin: auto auto 8px;
-
-            transition: .3s;
-        }
-
-        .category-item:hover .category-icon {
-            transform: rotate(10deg) scale(1.15);
-            box-shadow: 0 8px 20px rgba(238,77,45,.2);
-        }
-
-
-        /* ================= PRODUCTS ================= */
-
-        .products {
-            max-width: 1200px;
-            margin: 35px auto 60px;
-        }
-
-        .products-title {
-            display: flex;
+            align-items: end;
             justify-content: space-between;
-            margin-bottom: 20px;
+            gap: 16px;
+            margin: 34px 0 17px;
         }
 
-        .products-title h2 {
-            font-size: 25px;
+        .section-head h2 {
+            margin: 0;
+            font-family: 'Manrope', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 800;
+            letter-spacing: -.04em;
         }
 
-        .products-title span {
-            color: #ee4d2d;
-            cursor: pointer;
+        .section-head p { margin: 5px 0 0; color: var(--muted); font-size: .78rem; }
+        .result-count { color: #c6c1d5; font-size: .77rem; }
+        .result-count strong { color: #d9cbff; }
+        .catalog-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .status-message {
+            margin-bottom: 18px;
+            padding: 12px 15px;
+            border: 1px solid rgba(110,231,183,.2);
+            border-radius: 13px;
+            color: #a7f3d0;
+            background: rgba(16,185,129,.09);
+            font-size: .84rem;
         }
 
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 18px;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 17px;
         }
 
         .product-card {
-            background: white;
-            border-radius: 15px;
+            position: relative;
+            min-width: 0;
             overflow: hidden;
-
-            box-shadow: 0 4px 15px rgba(0,0,0,.06);
-
-            transition: .35s;
-
-            animation: cardIn .7s ease both;
-        }
-
-        .product-card:nth-child(1) {
-            animation-delay: .1s;
-        }
-
-        .product-card:nth-child(2) {
-            animation-delay: .2s;
-        }
-
-        .product-card:nth-child(3) {
-            animation-delay: .3s;
-        }
-
-        .product-card:nth-child(4) {
-            animation-delay: .4s;
-        }
-
-        .product-card:nth-child(5) {
-            animation-delay: .5s;
-        }
-
-        @keyframes cardIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px) scale(.95);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: linear-gradient(145deg, rgba(23,27,42,.94), rgba(13,17,28,.96));
+            box-shadow: 0 15px 35px rgba(0,0,0,.15);
+            animation: card-in .55s ease both;
+            transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease;
         }
 
         .product-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 15px 35px rgba(0,0,0,.13);
+            transform: translateY(-7px);
+            border-color: rgba(167,139,250,.38);
+            box-shadow: 0 24px 48px rgba(0,0,0,.34);
+        }
+
+        @keyframes card-in {
+            from { opacity: 0; transform: translateY(18px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .product-art {
+            position: relative;
+            display: grid;
+            height: 188px;
+            place-items: center;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(255,255,255,.06);
+            background:
+                radial-gradient(circle at 50% 42%, rgba(167,139,250,.17), transparent 38%),
+                linear-gradient(145deg, rgba(40,37,61,.9), rgba(17,23,37,.95));
         }
 
         .product-image {
-            height: 180px;
-
-            background: linear-gradient(
-                135deg,
-                #fff3ee,
-                #ffe0d6
-            );
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-size: 75px;
-
-            transition: .4s;
+            position: absolute;
+            z-index: 1;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .4s ease;
         }
 
-        .product-card:hover .product-image {
-            transform: scale(1.05);
+        .product-card:hover .product-image { transform: scale(1.04); }
+
+        .product-art::before {
+            position: absolute;
+            inset: 0;
+            content: '';
+            opacity: .32;
+            background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+            background-size: 22px 22px;
+            mask-image: radial-gradient(circle, black, transparent 82%);
         }
 
-        .product-info {
-            padding: 15px;
+        .product-art::after {
+            position: absolute;
+            width: 114px;
+            height: 114px;
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: 50%;
+            content: '';
+            box-shadow: 0 0 0 15px rgba(255,255,255,.025), 0 0 32px rgba(167,139,250,.11);
+            transition: transform .35s ease;
         }
+
+        .product-card:hover .product-art::after { transform: scale(1.12); }
+
+        .product-symbol {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            width: 76px;
+            height: 76px;
+            place-items: center;
+            border: 1px solid rgba(255,255,255,.14);
+            border-radius: 25px;
+            color: #e4d9ff;
+            background: linear-gradient(145deg, rgba(195,174,255,.24), rgba(103,232,249,.09));
+            box-shadow: 0 15px 36px rgba(0,0,0,.22), inset 0 1px rgba(255,255,255,.16);
+            font-size: 2rem;
+            transform: rotate(-7deg);
+            transition: transform .35s ease;
+        }
+
+        .product-card:hover .product-symbol { transform: rotate(0) scale(1.08); }
+
+        .product-status {
+            position: absolute;
+            z-index: 2;
+            top: 13px;
+            left: 13px;
+            padding: 6px 9px;
+            border: 1px solid rgba(110,231,183,.14);
+            border-radius: 999px;
+            color: var(--green);
+            background: rgba(9,15,22,.64);
+            font-size: .66rem;
+            font-weight: 700;
+            backdrop-filter: blur(8px);
+        }
+
+        .product-status.low {
+            color: var(--orange);
+            border-color: rgba(251,191,114,.16);
+        }
+
+        .product-status.empty {
+            color: var(--red);
+            border-color: rgba(251,113,133,.16);
+        }
+
+        .product-info { padding: 17px; }
 
         .product-name {
-            font-size: 15px;
-            font-weight: 500;
-            min-height: 38px;
+            display: -webkit-box;
+            min-height: 42px;
+            overflow: hidden;
+            color: #f0eef8;
+            font-family: 'Manrope', sans-serif;
+            font-size: .91rem;
+            font-weight: 700;
+            line-height: 1.45;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
         }
 
+        .product-description {
+            display: -webkit-box;
+            min-height: 34px;
+            margin: 7px 0 12px;
+            overflow: hidden;
+            color: var(--muted);
+            font-size: .72rem;
+            line-height: 1.55;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+        }
+
+        .product-bottom {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 10px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255,255,255,.07);
+        }
+
+        .price-label { display: block; margin-bottom: 3px; color: var(--muted); font-size: .64rem; }
+
         .price {
-            color: #ee4d2d;
-            font-size: 20px;
-            font-weight: bold;
-            margin: 8px 0;
+            color: #d7c9ff;
+            font-family: 'Manrope', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 800;
+            letter-spacing: -.03em;
+            white-space: nowrap;
         }
 
         .stock {
-            color: #999;
-            font-size: 12px;
-            margin-bottom: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #a8a5b8;
+            font-size: .68rem;
+            white-space: nowrap;
         }
 
-        .buy-button {
-            width: 100%;
-            padding: 10px;
-
-            border: 1px solid #ee4d2d;
-            border-radius: 8px;
-
-            background: white;
-            color: #ee4d2d;
-
-            cursor: pointer;
-
-            font-weight: bold;
-
-            transition: .3s;
-        }
-
-        .buy-button:hover {
-            background: #ee4d2d;
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(238,77,45,.25);
-        }
-
-
-        /* ================= FOOTER ================= */
-
-        footer {
-            background: #292929;
-            color: white;
+        .empty-state {
+            display: none;
+            padding: 66px 20px;
+            border: 1px dashed rgba(255,255,255,.13);
+            border-radius: 22px;
+            color: var(--muted);
             text-align: center;
-            padding: 30px;
         }
 
+        .empty-state i { display: block; margin-bottom: 12px; color: #b5a1f9; font-size: 2rem; }
+        .empty-state strong { display: block; margin-bottom: 5px; color: var(--text); }
 
-        /* ================= FLOATING EMOJI ================= */
-
-        .floating {
-            position: fixed;
-            pointer-events: none;
-            opacity: .15;
-            font-size: 35px;
-            animation: floating 8s linear infinite;
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 34px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255,255,255,.07);
+            color: #77788d;
+            font-size: .72rem;
         }
 
-        .f1 {
-            left: 5%;
-            bottom: -50px;
+        @media (max-width: 1050px) {
+            .product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
         }
 
-        .f2 {
-            left: 25%;
-            bottom: -50px;
-            animation-delay: 2s;
+        @media (max-width: 760px) {
+            .topbar { flex-wrap: wrap; margin-bottom: 25px; }
+            .search { order: 3; width: 100%; }
+            .hero { min-height: 260px; align-items: flex-start; flex-direction: column; }
+            .hero::before { right: -180px; }
+            .hero::after { top: auto; right: 12%; bottom: 24px; width: 82px; height: 82px; opacity: .65; transform: none; }
+            .hero-meta { align-items: flex-start; }
+            .catalog-count { font-size: 1.35rem; }
+            .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+            .product-art { height: 155px; }
+            .product-info { padding: 13px; }
         }
 
-        .f3 {
-            right: 20%;
-            bottom: -50px;
-            animation-delay: 4s;
+        @media (max-width: 430px) {
+            .top-actions .nav-link { padding-inline: 10px; font-size: .74rem; }
+            .product-grid { grid-template-columns: 1fr; }
+            .product-art { height: 190px; }
+            .section-head { align-items: flex-start; flex-direction: column; }
+            .footer { flex-direction: column; }
         }
 
-        @keyframes floating {
-            from {
-                transform: translateY(0) rotate(0);
-            }
-
-            to {
-                transform: translateY(-100vh) rotate(360deg);
-            }
-        }
-
-
-        /* ================= RESPONSIVE ================= */
-
-        @media(max-width: 900px) {
-
-            .product-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            .hero {
-                margin: 20px;
-            }
-
-            .category,
-            .products {
-                margin-left: 20px;
-                margin-right: 20px;
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+                transition-duration: .01ms !important;
             }
         }
-
-        @media(max-width: 600px) {
-
-            .nav-content {
-                flex-wrap: wrap;
-            }
-
-            .search-box {
-                order: 3;
-                flex-basis: 100%;
-            }
-
-            .hero {
-                padding: 30px;
-            }
-
-            .hero h1 {
-                font-size: 28px;
-            }
-
-            .hero-icon {
-                display: none;
-            }
-
-            .category-list {
-                flex-wrap: wrap;
-            }
-
-            .product-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
     </style>
 </head>
 
-
 <body>
+    <div class="page">
+        <div class="orb orb-one"></div>
+        <div class="orb orb-two"></div>
 
+        <header class="topbar">
+            <a class="brand" href="{{ url('/') }}">
+                <span class="brand-icon"><i class="bi bi-basket2-fill"></i></span>
+                <span>minimarket<span class="brand-caption">Daily essentials</span></span>
+            </a>
 
-    <!-- FLOATING DECORATION -->
+            <label class="search">
+                <i class="bi bi-search"></i>
+                <input id="product-search" type="search" placeholder="Cari nama atau deskripsi produk..." autocomplete="off" aria-label="Cari produk">
+            </label>
 
-    <div class="floating f1">🛒</div>
-    <div class="floating f2">🍜</div>
-    <div class="floating f3">🛍️</div>
+            <nav class="top-actions" aria-label="Navigasi">
+                <a class="nav-link" href="{{ route('kasir') }}"><i class="bi bi-receipt-cutoff"></i> Buka kasir</a>
+                @auth
+                    <a class="nav-link" href="{{ route('dashboard') }}"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+                @else
+                    <a class="nav-link" href="{{ route('login') }}"><i class="bi bi-person"></i> Masuk</a>
+                @endauth
+            </nav>
+        </header>
 
-
-    <!-- NAVBAR -->
-
-    <nav class="navbar">
-
-        <div class="nav-content">
-
-            <div class="logo">
-                🛒 MiniMarket
-            </div>
-
-            <div class="search-box">
-
-                <input
-                    type="text"
-                    placeholder="Cari produk yang kamu inginkan..."
-                >
-
-                <button>
-                    🔍
-                </button>
-
-            </div>
-
-            <div class="cart">
-                🛍️
-            </div>
-
-        </div>
-
-    </nav>
-
-
-    <!-- HERO -->
-
-    <section class="hero">
-
-        <div class="circle"></div>
-
-        <div>
-
-            <h1>
-                Belanja Mudah & Hemat ✨
-            </h1>
-
-            <p>
-                Temukan berbagai kebutuhan sehari-hari
-                dengan harga terbaik!
-            </p>
-
-        </div>
-
-        <div class="hero-icon">
-            🛒
-        </div>
-
-    </section>
-
-
-    <!-- CATEGORY -->
-
-    <section class="category">
-
-        <h2>
-            🏷️ Kategori
-        </h2>
-
-        <div class="category-list">
-
-            <div class="category-item">
-                <div class="category-icon">
-                    🍜
+        <main class="main">
+            <section class="hero">
+                <div class="hero-copy">
+                    <p class="eyebrow">Pilihan harian Anda</p>
+                    <h1>Belanja mudah.<br><span>Hari jadi lebih ringan.</span></h1>
+                    <p>Temukan kebutuhan pilihan dengan harga yang jelas dan informasi stok terkini.</p>
                 </div>
-                <p>Makanan</p>
-            </div>
-
-            <div class="category-item">
-                <div class="category-icon">
-                    🥤
+                <div class="hero-meta">
+                    <span class="catalog-count">{{ number_format($products->count()) }} produk</span>
+                    <span>tersedia di katalog</span>
                 </div>
-                <p>Minuman</p>
-            </div>
+            </section>
 
-            <div class="category-item">
-                <div class="category-icon">
-                    🧴
+            <section aria-labelledby="catalog-title">
+                @if (session('status'))
+                    <div class="status-message" role="status">{{ session('status') }}</div>
+                @endif
+                <div class="section-head">
+                    <div>
+                        <h2 id="catalog-title">Jelajahi produk</h2>
+                        <p>Pilihan kebutuhan sehari-hari dari MiniMarket</p>
+                    </div>
+                    <div class="catalog-actions">
+                        <span class="result-count"><strong id="visible-count">{{ $products->count() }}</strong> produk ditampilkan</span>
+                        @if ($canManageProducts)
+                            <a class="nav-link" href="{{ route('products.create') }}"><i class="bi bi-plus-lg"></i> Tambah produk</a>
+                        @endif
+                        <a class="nav-link" href="{{ route('kasir') }}"><i class="bi bi-arrow-right-circle"></i> Ke kasir</a>
+                    </div>
                 </div>
-                <p>Perawatan</p>
-            </div>
 
-            <div class="category-item">
-                <div class="category-icon">
-                    🧹
-                </div>
-                <p>Rumah</p>
-            </div>
+                @if ($products->isNotEmpty())
+                    <div class="product-grid" id="product-grid">
+                        @foreach ($products as $product)
+                            <article
+                                class="product-card"
+                                data-search="{{ mb_strtolower($product->nama . ' ' . ($product->deskripsi ?? '')) }}"
+                                style="animation-delay: {{ min($loop->index * 65, 520) }}ms"
+                            >
+                                <div class="product-art">
+                                    @if ((int) $product->stok < 1)
+                                        <span class="product-status empty">Stok habis</span>
+                                    @elseif ((int) $product->stok <= 5)
+                                        <span class="product-status low">Stok menipis</span>
+                                    @else
+                                        <span class="product-status">Tersedia</span>
+                                    @endif
+                                    @if (!empty($product->image_url))
+                                        <img class="product-image" src="{{ $product->image_url }}" alt="{{ $product->nama }}" loading="lazy">
+                                    @else
+                                        <span class="product-symbol" aria-hidden="true"><i class="bi bi-box-seam"></i></span>
+                                    @endif
+                                </div>
 
-            <div class="category-item">
-                <div class="category-icon">
-                    🍪
-                </div>
-                <p>Snack</p>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- PRODUCTS -->
-
-    <section class="products">
-
-        <div class="products-title">
-
-            <h2>
-                🔥 Produk Terbaru
-            </h2>
-
-            <span>
-                Lihat Semua →
-            </span>
-
-        </div>
-
-
-        <div class="product-grid">
-
-            @foreach ($products as $product)
-
-                <div class="product-card">
-
-                    <div class="product-image">
-                        🍜
+                                <div class="product-info">
+                                    <div class="product-name">{{ $product->nama }}</div>
+                                    <p class="product-description">{{ $product->deskripsi ?: 'Produk pilihan untuk kebutuhan sehari-hari.' }}</p>
+                                    <div class="product-bottom">
+                                        <div>
+                                            <span class="price-label">Harga</span>
+                                            <span class="price">Rp {{ number_format($product->harga, 0, ',', '.') }}</span>
+                                        </div>
+                                        <span class="stock"><i class="bi bi-box"></i>{{ number_format($product->stok) }} unit</span>
+                                    </div>
+                                </div>
+                            </article>
+                        @endforeach
                     </div>
 
-                    <div class="product-info">
-
-                        <div class="product-name">
-
-                            {{ $product->nama }}
-
-                        </div>
-
-
-                        <div class="price">
-
-                            Rp
-                            {{ number_format($product->harga, 0, ',', '.') }}
-
-                        </div>
-
-
-                        <div class="stock">
-
-                            📦 Stok tersedia:
-                            {{ $product->stok }}
-
-                        </div>
-
-
-                        <button class="buy-button">
-
-                            🛒 + Keranjang
-
-                        </button>
-
+                    <div class="empty-state" id="no-results">
+                        <div><i class="bi bi-search"></i><strong>Produk tidak ditemukan</strong>Coba kata kunci lain.</div>
                     </div>
+                @else
+                    <div class="empty-state" style="display: block;">
+                        <div><i class="bi bi-box-seam"></i><strong>Belum ada produk</strong>Produk akan muncul di sini setelah ditambahkan ke katalog.</div>
+                    </div>
+                @endif
+            </section>
+        </main>
 
-                </div>
+        <footer class="footer">
+            <span>© {{ now()->year }} MiniMarket</span>
+            <span>Belanja mudah · Cepat · Hemat</span>
+        </footer>
+    </div>
 
-            @endforeach
+    <script>
+        const searchInput = document.getElementById('product-search');
+        const productCards = Array.from(document.querySelectorAll('.product-card'));
+        const resultCount = document.getElementById('visible-count');
+        const noResults = document.getElementById('no-results');
 
-        </div>
+        searchInput?.addEventListener('input', () => {
+            const query = searchInput.value.trim().toLocaleLowerCase('id');
+            let visible = 0;
 
-    </section>
+            productCards.forEach((card) => {
+                const matches = card.dataset.search.includes(query);
+                card.hidden = !matches;
+                visible += matches ? 1 : 0;
+            });
 
-
-    <!-- FOOTER -->
-
-    <footer>
-
-        <p>
-            🛒 MiniMarket
-        </p>
-
-        <br>
-
-        <p>
-            Belanja mudah • Cepat • Hemat ✨
-        </p>
-
-        <br>
-
-        <small>
-            © 2026 MiniMarket
-        </small>
-
-    </footer>
-
-
+            resultCount.textContent = visible;
+            noResults.style.display = visible === 0 ? 'block' : 'none';
+        });
+    </script>
 </body>
+
 </html>
