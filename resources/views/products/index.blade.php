@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Katalog Produk | MiniMarket</title>
+    <title>Katalog Produk | MINIGIRL</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
     <style>
         :root {
             color-scheme: dark;
-            --background: #080a12;
+            --background: #351326;
             --surface: rgba(18, 21, 34, 0.86);
             --border: rgba(255, 255, 255, 0.08);
             --text: #f4f3fb;
@@ -31,8 +31,8 @@
             min-height: 100vh;
             color: var(--text);
             background:
-                radial-gradient(ellipse at 78% 5%, rgba(111, 82, 208, .18), transparent 28rem),
-                radial-gradient(ellipse at 4% 44%, rgba(46, 127, 155, .10), transparent 25rem),
+                radial-gradient(ellipse at 78% 5%, rgba(236, 72, 153, .24), transparent 28rem),
+                radial-gradient(ellipse at 4% 44%, rgba(190, 24, 93, .18), transparent 25rem),
                 var(--background);
             font-family: 'DM Sans', sans-serif;
             overflow-x: hidden;
@@ -575,7 +575,7 @@
         <header class="topbar">
             <a class="brand" href="{{ url('/') }}">
                 <span class="brand-icon"><i class="bi bi-basket2-fill"></i></span>
-                <span>minimarket<span class="brand-caption">Daily essentials</span></span>
+                <span>MINIGIRL<span class="brand-caption">Daily essentials</span></span>
             </a>
 
             <label class="search">
@@ -613,7 +613,7 @@
                 <div class="section-head">
                     <div>
                         <h2 id="catalog-title">Jelajahi produk</h2>
-                        <p>Pilihan kebutuhan sehari-hari dari MiniMarket</p>
+                        <p>Pilihan kebutuhan sehari-hari dari MINIGIRL</p>
                     </div>
                     <div class="catalog-actions">
                         <span class="result-count"><strong id="visible-count">{{ $products->count() }}</strong> produk ditampilkan</span>
@@ -674,7 +674,7 @@
         </main>
 
         <footer class="footer">
-            <span>© {{ now()->year }} MiniMarket</span>
+            <span>© {{ now()->year }} MINIGIRL</span>
             <span>Belanja mudah · Cepat · Hemat</span>
         </footer>
     </div>

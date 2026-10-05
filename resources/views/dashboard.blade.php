@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Dashboard | MiniMarket</title>
+    <title>Dashboard | MINIGIRL</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
     <style>
         :root {
             color-scheme: dark;
-            --background: #080a12;
+            --background: #351326;
             --surface: rgba(18, 21, 34, 0.82);
             --surface-light: rgba(255, 255, 255, 0.035);
             --border: rgba(255, 255, 255, 0.08);
@@ -33,8 +33,8 @@
             min-height: 100vh;
             color: var(--text);
             background:
-                radial-gradient(ellipse at 78% 6%, rgba(111, 82, 208, 0.18), transparent 28rem),
-                radial-gradient(ellipse at 4% 35%, rgba(46, 127, 155, 0.10), transparent 25rem),
+                radial-gradient(ellipse at 78% 6%, rgba(236, 72, 153, 0.24), transparent 28rem),
+                radial-gradient(ellipse at 4% 35%, rgba(190, 24, 93, 0.18), transparent 25rem),
                 var(--background);
             font-family: 'DM Sans', sans-serif;
         }
@@ -518,7 +518,7 @@
         <div class="topbar">
             <a class="brand" href="{{ route('dashboard') }}">
                 <span class="brand-icon"><i class="bi bi-basket2-fill"></i></span>
-                <span>minimarket<span class="brand-caption">Admin workspace</span></span>
+                <span>MINIGIRL<span class="brand-caption">Admin workspace</span></span>
             </a>
 
             <div class="topbar-right">
@@ -541,7 +541,7 @@
                 <div class="hero-copy">
                     <p class="eyebrow">Ringkasan toko</p>
                     <h1>Halo, {{ auth()->user()->name }}.<br><span>Semua terkendali.</span></h1>
-                    <p>Pantau inventaris MiniMarket dalam satu tampilan. Angka di bawah diperbarui langsung dari data produk Anda.</p>
+                    <p>Pantau inventaris MINIGIRL dalam satu tampilan. Angka di bawah diperbarui langsung dari data produk Anda.</p>
                     <div class="hero-actions">
                         <a class="button-primary" href="{{ route('products.index') }}">
                             <i class="bi bi-box-seam"></i> Kelola produk
@@ -689,7 +689,7 @@
             </section>
 
             <footer class="footer-note">
-                <span>MiniMarket · Dashboard inventaris</span>
+                <span>MINIGIRL · Dashboard inventaris</span>
                 <span>Terakhir diperbarui {{ now()->format('H:i') }}</span>
             </footer>
         </main>

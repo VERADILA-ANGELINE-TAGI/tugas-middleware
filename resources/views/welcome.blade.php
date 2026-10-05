@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#f6f8ff">
-    <title>ONESR Minimarket | Belanja Harian Lebih Mudah</title>
+    <title>MINIGIRL | Belanja Harian Lebih Mudah</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
             --blue-dark: #2448ce;
             --line: #e8ebf4;
             --surface: #fff;
-            --background: #f6f8ff;
+            --background: #fff0f6;
         }
 
         * { box-sizing: border-box; }
@@ -31,7 +31,7 @@
             margin: 0;
             color: var(--ink);
             background:
-                radial-gradient(ellipse at 88% 10%, rgba(105, 135, 255, .12), transparent 32rem),
+                radial-gradient(ellipse at 88% 10%, rgba(244, 114, 182, .18), transparent 32rem),
                 var(--background);
             font-family: 'DM Sans', sans-serif;
         }
@@ -293,7 +293,7 @@
         <div class="container header-inner">
             <a class="brand" href="{{ url('/') }}">
                 <span class="brand-mark"><i class="bi bi-basket2-fill"></i></span>
-                <span>ONESR<small>Minimarket</small></span>
+                <span>MINIGIRL<small>Minimarket</small></span>
             </a>
             <nav class="header-actions" aria-label="Navigasi utama">
                 <a class="button button-light" href="{{ route('products.index') }}"><i class="bi bi-grid"></i><span>Produk</span></a>
@@ -315,7 +315,7 @@
             <div class="hero-copy">
                 <span class="eyebrow"><i class="bi bi-patch-check-fill"></i> Kebutuhan harian, tanpa ribet</span>
                 <h1>Belanja lebih mudah,<br><span>hari lebih ringan.</span></h1>
-                <p>Temukan kebutuhan sehari-hari pilihan di ONESR Minimarket. Lihat katalog, cek ketersediaan, lalu lanjutkan dengan mudah.</p>
+                <p>Temukan kebutuhan sehari-hari pilihan di MINIGIRL. Lihat katalog, cek ketersediaan, lalu lanjutkan dengan mudah.</p>
                 <div class="hero-buttons">
                     <a class="button button-primary" href="{{ route('products.index') }}"><i class="bi bi-bag"></i> Jelajahi produk</a>
                     @auth
@@ -338,7 +338,7 @@
             </div>
         </section>
 
-        <section class="benefit-row" aria-label="Keunggulan ONESR">
+        <section class="benefit-row" aria-label="Keunggulan MINIGIRL">
             <article class="benefit">
                 <span class="benefit-icon"><i class="bi bi-box-seam"></i></span>
                 <span><strong>Produk pilihan</strong><span>Kebutuhan harian dalam satu tempat</span></span>
@@ -380,7 +380,7 @@
 
     <footer class="site-footer">
         <div class="container footer-inner">
-            <span>© {{ now()->year }} ONESR Minimarket</span>
+            <span>© {{ now()->year }} MINIGIRL</span>
             <span>Belanja mudah · Cepat · Praktis</span>
         </div>
     </footer>

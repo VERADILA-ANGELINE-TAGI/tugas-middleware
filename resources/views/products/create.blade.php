@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambah Produk | MiniMarket</title>
+    <title>Tambah Produk | MINIGIRL</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
     <style>
         :root {
             color-scheme: dark;
-            --background: #080a12;
+            --background: #351326;
             --surface: rgba(18, 21, 34, .9);
             --border: rgba(255, 255, 255, .09);
             --text: #f4f3fb;
@@ -28,7 +28,7 @@
             padding: 28px 16px;
             color: var(--text);
             background:
-                radial-gradient(ellipse at 78% 5%, rgba(111, 82, 208, .18), transparent 28rem),
+                radial-gradient(ellipse at 78% 5%, rgba(236, 72, 153, .24), transparent 28rem),
                 var(--background);
             font-family: 'DM Sans', sans-serif;
         }
@@ -77,7 +77,7 @@
         <header class="topbar">
             <a class="brand" href="{{ route('products.index') }}">
                 <span class="brand-icon"><i class="bi bi-basket2-fill"></i></span>
-                <span>MiniMarket</span>
+                <span>MINIGIRL</span>
             </a>
             <a class="button" href="{{ route('products.index') }}"><i class="bi bi-arrow-left"></i> Kembali ke produk</a>
         </header>
@@ -85,7 +85,7 @@
         <section class="form-card" aria-labelledby="form-title">
             <p class="eyebrow">Katalog produk</p>
             <h1 id="form-title">Tambah produk baru</h1>
-            <p class="intro">Isi informasi barang untuk menambahkannya ke katalog MiniMarket.</p>
+            <p class="intro">Isi informasi barang untuk menambahkannya ke katalog MINIGIRL.</p>
 
             <form method="POST" action="{{ route('products.store') }}" enctype="multipart/form-data">
                 @csrf

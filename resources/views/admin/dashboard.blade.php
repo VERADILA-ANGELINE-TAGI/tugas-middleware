@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MiniMarket Admin</title>
+    <title>MINIGIRL Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
         :root {
-            --bg-1: #030b17;
-            --bg-2: #0b162b;
-            --bg-3: #111d35;
+            --bg-1: #210d18;
+            --bg-2: #3b132c;
+            --bg-3: #21101f;
             --panel: rgba(12, 19, 31, 0.72);
             --panel-strong: rgba(18, 28, 44, 0.9);
             --line: rgba(255, 255, 255, 0.09);
@@ -34,8 +34,8 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: var(--text);
             background:
-                radial-gradient(circle at 8% 12%, rgba(139, 109, 255, 0.24), transparent 18%),
-                radial-gradient(circle at 82% 14%, rgba(105, 227, 255, 0.18), transparent 20%),
+                radial-gradient(circle at 8% 12%, rgba(236, 72, 153, 0.24), transparent 18%),
+                radial-gradient(circle at 82% 14%, rgba(244, 114, 182, 0.2), transparent 20%),
                 radial-gradient(circle at 68% 78%, rgba(255, 120, 212, 0.18), transparent 22%),
                 linear-gradient(135deg, var(--bg-1), var(--bg-2) 35%, var(--bg-3));
             overflow-x: hidden;
@@ -595,7 +595,7 @@
             <div class="brand">
                 <div class="brand-mark">M</div>
                 <div>
-                    <div>MiniMarket</div>
+                    <div>MINIGIRL</div>
                     <small>Control Center</small>
                 </div>
             </div>

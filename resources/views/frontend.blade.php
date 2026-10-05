@@ -5,20 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>MiniMart - Minimarket Online</title>
+    <title>MINIGIRL - Minimarket Online</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet">
 </head>
 
-<body>
+<body class="bg-danger-subtle">
 
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
         <div class="container">
 
             <a class="navbar-brand fw-bold" href="/">
-                🛒 MiniMart
+                🛒 MINIGIRL
             </a>
 
             <div>
@@ -32,7 +32,7 @@
 
 
     <!-- HERO -->
-    <section class="bg-light py-5">
+    <section class="bg-danger-subtle py-5">
 
         <div class="container">
 
@@ -41,7 +41,7 @@
                 <div class="col-md-6">
 
                     <h1 class="display-4 fw-bold">
-                        Selamat Datang di MiniMart
+                        Selamat Datang di MINIGIRL
                     </h1>
 
                     <p class="lead">
@@ -66,7 +66,7 @@
                     </div>
 
                     <h3>
-                        MiniMart
+                        MINIGIRL
                     </h3>
 
                     <p class="text-muted">
@@ -194,7 +194,7 @@
     <footer class="bg-dark text-white text-center py-4">
 
         <p class="mb-0">
-            © 2026 MiniMart. All Rights Reserved.
+            © 2026 MINIGIRL. All Rights Reserved.
         </p>
 
     </footer>

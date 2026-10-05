@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f4f7fb">
-    <title>Kasir | MiniMarket</title>
+    <title>Kasir | MINIGIRL</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <style>
@@ -13,8 +13,10 @@
             --muted: #758096;
             --blue: #2563eb;
             --blue-dark: #1d4ed8;
-            --line: #e5eaf2;
-            --canvas: #f3f6fb;
+            --line: #f1d8e3;
+            --canvas: #fff0f6;
+            --pink: #db2777;
+            --pink-light: #fff5f9;
             --green: #178457;
             --red: #d9485f;
             --shadow: 0 10px 28px rgba(29, 49, 82, .07);
@@ -233,7 +235,7 @@
             overflow: hidden;
             border: 1px solid var(--line);
             border-radius: 13px;
-            background: #fff;
+            background: var(--pink-light);
             box-shadow: var(--shadow);
         }
 
@@ -245,7 +247,7 @@
             gap: 12px;
             padding: 12px 16px;
             border-bottom: 1px solid var(--line);
-            background: linear-gradient(180deg, #fff, #fcfdff);
+            background: linear-gradient(180deg, #fff, #fff0f6);
         }
 
         .panel-title {
@@ -257,7 +259,7 @@
             font-weight: 800;
         }
 
-        .panel-title i { color: var(--blue); font-size: 15px; }
+        .panel-title i { color: var(--pink); font-size: 15px; }
         .panel-body { padding: 16px; }
 
         .field-label {
@@ -276,8 +278,8 @@
         }
 
         .form-control:focus, .form-select:focus {
-            border-color: #82adff;
-            box-shadow: 0 0 0 .2rem rgba(37, 99, 235, .11);
+            border-color: #f09abe;
+            box-shadow: 0 0 0 .2rem rgba(219, 39, 119, .12);
         }
 
         .search-row { display: flex; gap: 9px; }
@@ -348,7 +350,7 @@
             padding: 10px 13px;
             border-bottom: 1px solid var(--line);
             color: #667287;
-            background: #f8f9fb;
+            background: #fff0f6;
             font-size: 10px;
             font-weight: 800;
             letter-spacing: .035em;
@@ -432,19 +434,19 @@
         .summary-total {
             margin: 15px 0;
             padding: 14px;
-            border: 1px solid #eaf0f7;
+            border: 1px solid #f5d5e3;
             border-radius: 10px;
-            background: #f7f9fc;
+            background: #fff0f6;
         }
 
-        .summary-total span { display: block; color: #778398; font-size: 10px; font-weight: 700; letter-spacing: .07em; }
-        .summary-total strong { display: block; margin-top: 4px; color: #172033; font-size: 25px; font-weight: 800; letter-spacing: -.04em; }
+        .summary-total span { display: block; color: #9d5273; font-size: 10px; font-weight: 700; letter-spacing: .07em; }
+        .summary-total strong { display: block; margin-top: 4px; color: #9d174d; font-size: 25px; font-weight: 800; letter-spacing: -.04em; }
 
         .payment-box {
             padding: 12px;
-            border: 1px solid #d6e7fc;
+            border: 1px solid #f2c9da;
             border-radius: 10px;
-            background: #f2f8ff;
+            background: #fff0f6;
         }
 
         .payment-input-wrap { position: relative; }
@@ -581,9 +583,9 @@
 </head>
 <body>
     <header class="app-header">
-        <a class="brand" href="#" aria-label="MiniMarket Kasir">
+        <a class="brand" href="#" aria-label="MINIGIRL Kasir">
             <span class="brand-mark"><i class="bi bi-shop"></i></span>
-            <span class="brand-name">MiniMarket<span class="brand-caption">Sistem kasir</span></span>
+            <span class="brand-name">MINIGIRL<span class="brand-caption">Sistem kasir</span></span>
         </a>
         <div class="header-right">
             <span class="status-pill" id="register-status"><span class="status-dot"></span> Kasir siap</span>
@@ -1523,7 +1525,7 @@
                 </div>
             `).join('');
             document.getElementById('receipt-content').innerHTML = `
-                <h3>MINIMARKET</h3>
+                <h3>MINIGIRL</h3>
                 <p>Terima kasih telah berbelanja</p>
                 <div class="receipt-divider"></div>
                 <div class="receipt-row"><span>No. Transaksi</span><strong>${safe(transactionNumber)}</strong></div>
